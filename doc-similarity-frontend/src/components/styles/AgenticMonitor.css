@@ -1,0 +1,22 @@
+.agentic-monitor {
+    margin-top: 30px;
+    background: #eaf4ff;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  
+  .agentic-monitor h3 {
+    margin-bottom: 10px;
+    color: #004085;
+  }
+  
+  .metrics {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .metric {
+    font-size: 14px;
+    color: #0056b3;
+  }
+  

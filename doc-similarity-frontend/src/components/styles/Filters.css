@@ -1,0 +1,16 @@
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    justify-content: center;
+  }
+  
+  .filters input,
+  .filters select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    min-width: 180px;
+    background: #fafafa;
+  }
