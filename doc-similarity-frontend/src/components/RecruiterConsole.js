@@ -3,7 +3,7 @@ import Filters from './Filters';
 import ConsultantList from './ConsultantList';
 import AgenticMonitor from './AgenticMonitor';
 import ReportSection from './ReportSection';
-import '../styles/RecruiterConsole.css';
+import './RecruiterConsole.css';
 
 function RecruiterConsole() {
   return (

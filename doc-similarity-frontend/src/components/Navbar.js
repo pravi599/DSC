@@ -10,9 +10,8 @@ function Navbar() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   const handleLogout = () => {
-    // Clear login status
+
     localStorage.removeItem('isLoggedIn');
-    // Optionally clear other stored data (e.g., tokens)
     // localStorage.removeItem('token');
 
     // Navigate to login page
@@ -28,7 +27,7 @@ function Navbar() {
             Logout
           </button>
         ) : (
-          <Link to="/">Login</Link>
+          <Link to="/" className="login-button">Login</Link>
         )}
         {/* <Link to="/register">Register</Link>
         <Link to="/dashboard">Dashboard</Link>

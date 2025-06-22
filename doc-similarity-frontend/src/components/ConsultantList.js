@@ -1,7 +1,6 @@
-// File: components/ConsultantList.js
 import React from 'react';
-import { consultantProfiles } from '../data';
-import '../styles/ConsultantList.css';
+import { consultantProfiles } from './data';
+import './ConsultantList.css';
 
 function ConsultantList() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/AgenticMonitor.css';
+import './AgenticMonitor.css';
 
 function AgenticMonitor() {
   return (

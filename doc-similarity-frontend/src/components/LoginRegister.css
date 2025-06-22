@@ -1,16 +1,12 @@
-/* Auth.css */
-
 .auth-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Background image - subtle pastel abstract */
   background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
   background-size: cover;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* overlay with pastel white transparent */
   position: relative;
 }
 
@@ -48,7 +44,8 @@
   letter-spacing: 0.8px;
 }
 
-.auth-form input {
+.auth-form input,
+.auth-form select {
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 18px;
@@ -56,19 +53,28 @@
   border-radius: 12px;
   font-size: 15px;
   color: #5a516d;
+  background: #f6f5f7;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   outline: none;
-  background: #f6f5f7;
+  appearance: none; /* removes native select arrow for uniform styling */
 }
 
 .auth-form input::placeholder {
   color: #a8a2b2;
 }
 
-.auth-form input:focus {
+.auth-form input:focus,
+.auth-form select:focus {
   border-color: #b0a6c1;
   box-shadow: 0 0 8px rgba(176, 166, 193, 0.5);
   background: #fff;
+}
+
+.auth-form select {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
 }
 
 .auth-form button {
@@ -96,7 +102,9 @@
   .auth-form h2 {
     font-size: 22px;
   }
-  .auth-form input, .auth-form button {
+  .auth-form input, 
+  .auth-form select,
+  .auth-form button {
     font-size: 14px;
     padding: 12px 14px;
   }

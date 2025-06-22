@@ -1,8 +1,9 @@
-/* Layout & Container Fixes */
 .dashboard-wrapper {
+    background: #f4f6f8;
     display: flex;
     padding: 20px;
     box-sizing: border-box;
+    
   }
   
   .ar-dashboard {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Auth.css';
+import './LoginRegister.css';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -28,6 +29,8 @@ function Login() {
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <button type="submit">Login</button>
+        <p className="register-prompt">If not registered, <Link to="/register">register here</Link>.</p>
+
       </form>
     </div>
   );

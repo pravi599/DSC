@@ -1,6 +1,5 @@
-// File: components/Filters.js
 import React from 'react';
-import '../styles/Filters.css';
+import './Filters.css';
 
 function Filters() {
   return (

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 function Layout({ active, children }) {
   const [collapsed, setCollapsed] = useState(false);
-  const navbarHeight = 60; // Define your navbar height in px
+  const navbarHeight = 60;
 
   return (
     <div className="layout-container">
@@ -14,7 +14,6 @@ function Layout({ active, children }) {
         <nav>
           <NavLink to="/dashboard" className={active === 'dashboard' ? 'active' : ''}>Dashboard</NavLink>
           <NavLink to="/jd-compared" className={active === 'jd-compared' ? 'active' : ''}>JD Compared</NavLink>
-          <NavLink to="/profiles-ranked" className={active === 'profiles-ranked' ? 'active' : ''}>Profiles Ranked</NavLink>
           <NavLink to="/email-status" className={active === 'email-status' ? 'active' : ''}>Email Status</NavLink>
         </nav>
       </div>

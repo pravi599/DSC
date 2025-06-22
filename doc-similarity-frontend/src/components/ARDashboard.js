@@ -1,4 +1,3 @@
-// ARDashboard.js
 import React, { useState } from 'react';
 import Layout from './Layout';
 import './ARDashboard.css';
@@ -10,8 +9,11 @@ const jdMockData = [
     fileType: 'pdf',
     fileUrl: 'https://example.com/frontend.pdf',
     comparisonStatus: 'Completed',
+    comparisonDate: '2025-06-21 14:32',
     topMatches: ['Alice', 'Bob', 'Clara'],
+    topMatchesDate: '2025-06-21 14:40',
     emailStatus: 'Sent',
+    emailDate: '2025-06-21 14:45',
   },
   {
     id: 'JD102',
@@ -19,8 +21,11 @@ const jdMockData = [
     fileType: 'word',
     fileUrl: 'https://example.com/backend.docx',
     comparisonStatus: 'Completed',
+    comparisonDate: '2025-06-20 11:10',
     topMatches: ['Dan', 'Eva', 'Frank'],
+    topMatchesDate: '2025-06-20 11:18',
     emailStatus: 'Sent',
+    emailDate: '2025-06-20 11:22',
   },
   {
     id: 'JD103',
@@ -28,8 +33,11 @@ const jdMockData = [
     fileType: 'excel',
     fileUrl: 'https://example.com/data.xlsx',
     comparisonStatus: 'In Progress',
+    comparisonDate: null,
     topMatches: [],
+    topMatchesDate: null,
     emailStatus: 'Pending',
+    emailDate: null,
   },
 ];
 
@@ -120,11 +128,19 @@ function ARDashboard() {
                 const className = getStepClass(selectedJD[step], step === 'topMatches' ? 'profiles' : '');
                 const icon = getStepIcon(step, selectedJD[step]);
 
+                const date =
+                  step === 'comparisonStatus'
+                    ? selectedJD.comparisonDate
+                    : step === 'topMatches'
+                    ? selectedJD.topMatchesDate
+                    : selectedJD.emailDate;
+
                 return (
                   <div key={idx} className={`workflow-step ${className}`} title={label}>
                     <h4>{label}</h4>
                     <p>{icon}</p>
                     <span className="tooltip">{selectedJD[step]}</span>
+                    {date && <div className="step-date">🕒 {date}</div>}
                   </div>
                 );
               })}
@@ -135,60 +151,56 @@ function ARDashboard() {
             </div>
 
             <div className="profile-section">
-  <h3>Top 3 Ranked Profiles</h3>
-  {selectedJD.topMatches.length ? (
-    <div className="profiles-grid">
-      {selectedJD.topMatches.map((name, index) => {
-        // Mock scores out of 100
-        const categoryScores = {
-          skills: Math.floor(Math.random() * 31 + 60), // 60-90
-          experience: Math.floor(Math.random() * 31 + 60),
-          education: Math.floor(Math.random() * 31 + 60),
-        };
-        // Average of categories for overall
-        const overallScore = Math.floor(
-          (categoryScores.skills + categoryScores.experience + categoryScores.education) / 3
-        );
+              <h3>Top 3 Ranked Profiles</h3>
+              {selectedJD.topMatches.length ? (
+                <div className="profiles-grid">
+                  {selectedJD.topMatches.map((name, index) => {
+                    const categoryScores = {
+                      skills: Math.floor(Math.random() * 31 + 60),
+                      experience: Math.floor(Math.random() * 31 + 60),
+                      education: Math.floor(Math.random() * 31 + 60),
+                    };
+                    const overallScore = Math.floor(
+                      (categoryScores.skills + categoryScores.experience + categoryScores.education) / 3
+                    );
 
-        return (
-          <div className="profile-card enhanced" key={index}>
-            <h4>{name}</h4>
-            <p><strong>Email:</strong> {name.toLowerCase()}@example.com</p>
-            <p><strong>Overall Match:</strong> {overallScore}%</p>
-            <div className="match-bar-container">
-              <div
-                className="match-bar skills"
-                style={{ width: `${categoryScores.skills}%` }}
-                data-label={`${categoryScores.skills}%`}
-              >
-                Skills
-              </div>
-              <div
-                className="match-bar experience"
-                style={{ width: `${categoryScores.experience}%` }}
-                data-label={`${categoryScores.experience}%`}
-              >
-                Experience
-              </div>
-              <div
-                className="match-bar education"
-                style={{ width: `${categoryScores.education}%` }}
-                data-label={`${categoryScores.education}%`}
-              >
-                Education
-              </div>
+                    return (
+                      <div className="profile-card enhanced" key={index}>
+                        <h4>{name}</h4>
+                        <p><strong>Email:</strong> {name.toLowerCase()}@example.com</p>
+                        <p><strong>Overall Match:</strong> {overallScore}%</p>
+                        <div className="match-bar-container">
+                          <div
+                            className="match-bar skills"
+                            style={{ width: `${categoryScores.skills}%` }}
+                            data-label={`${categoryScores.skills}%`}
+                          >
+                            Skills
+                          </div>
+                          <div
+                            className="match-bar experience"
+                            style={{ width: `${categoryScores.experience}%` }}
+                            data-label={`${categoryScores.experience}%`}
+                          >
+                            Experience
+                          </div>
+                          <div
+                            className="match-bar education"
+                            style={{ width: `${categoryScores.education}%` }}
+                            data-label={`${categoryScores.education}%`}
+                          >
+                            Education
+                          </div>
+                        </div>
+                        <p>Rank: {index + 1}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="no-profiles">No matches found.</p>
+              )}
             </div>
-            <p>Rank: {index + 1}</p>
-          </div>
-        );
-      })}
-    </div>
-  ) : (
-    <p className="no-profiles">No matches found.</p>
-  )}
-</div>
-
-
           </div>
         )}
       </div>
