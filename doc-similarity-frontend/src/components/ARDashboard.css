@@ -1,0 +1,302 @@
+/* Layout & Container Fixes */
+.dashboard-wrapper {
+    display: flex;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .ar-dashboard {
+    flex-grow: 1;
+    width: 100%;
+  }
+  
+  /* Title */
+  .dashboard-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 50px;
+  }
+  
+  /* JD List */
+  .jd-list-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .jd-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  .jd-file-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .jd-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .jd-file-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .jd-file-icon {
+    font-size: 24px;
+  }
+  
+  .view-status-btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  
+  .view-status-btn:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Details section */
+  .details-section {
+    margin-top: 20px;
+  }
+  
+  /* Back Button */
+  .back-button {
+    background-color: transparent;
+    color: #2563eb;
+    font-weight: bold;
+    margin-bottom: 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Progress Workflow */
+  .workflow-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .workflow-step {
+    background-color: #ffffff;
+    padding: 16px 20px;
+    min-width: 180px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    flex: 1 1 200px;
+    max-width: 240px;
+    position: relative;
+  }
+  
+  .workflow-step:hover {
+    background-color: #f0f9ff;
+    transform: translateY(-4px);
+  }
+  
+  .workflow-step h4 {
+    font-size: 16px;
+    color: #1f2937;
+    margin-bottom: 6px;
+  }
+  
+  .workflow-step p {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .workflow-step.done {
+    border-left: 5px solid #10b981;
+  }
+  
+  .workflow-step.pending {
+    border-left: 5px solid #facc15;
+  }
+  
+  .workflow-step.notfound {
+    border-left: 5px solid #ef4444;
+  }
+  
+  .workflow-step::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: -18px;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #60a5fa;
+  }
+  
+  .workflow-step:last-child::after {
+    content: none;
+  }
+  
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111827;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .workflow-step:hover .tooltip {
+    opacity: 1;
+  }
+  
+  /* Overall Status Badge */
+  .overall-status-badge {
+    background-color: #fef3c7;
+    border: 2px solid #94a3b8;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #334155;
+    align-self: center;
+    margin-left: 10px;
+    white-space: nowrap;
+  }
+  
+  /* Profile Grid */
+  .profile-section {
+    margin-top: 30px;
+  }
+  
+  .profiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .profile-card {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .profile-card:hover {
+    transform: scale(1.03);
+  }
+  
+  .no-profiles {
+    color: #9ca3af;
+    font-style: italic;
+    margin-top: 10px;
+  }
+  .profile-card.enhanced {
+    padding: 16px;
+    border-radius: 10px;
+    background: #f9fafb;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-card.enhanced:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  }
+  
+  .match-bar-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .match-bar {
+    height: 18px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 18px;
+    padding-left: 6px;
+    position: relative;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .match-bar.skills {
+    background-color: #4caf50; /* Green */
+  }
+  
+  .match-bar.experience {
+    background-color: #2196f3; /* Blue */
+  }
+  
+  .match-bar.education {
+    background-color: #ff9800; /* Orange */
+  }
+  
+  .match-bar::after {
+    content: attr(data-label);
+    position: absolute;
+    right: 6px;
+    top: 0;
+    font-size: 10px;
+    color: #f0f0f0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      flex-direction: column;
+      margin-left: 0;
+      padding: 10px;
+    }
+  
+    .workflow-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .workflow-step {
+      max-width: 100%;
+    }
+  
+    .workflow-step::after {
+      content: "↓";
+      right: 50%;
+      top: auto;
+      bottom: -20px;
+      transform: translateX(50%);
+    }
+  
+    .workflow-step:last-child::after {
+      content: none;
+    }
+  
+    .tooltip {
+      top: auto;
+      bottom: -36px;
+    }
+  }
+  

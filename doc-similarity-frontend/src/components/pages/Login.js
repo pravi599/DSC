@@ -11,8 +11,10 @@ function Login() {
     e.preventDefault();
     // Mock validation
     if (email === 'ar@hexaware.com') {
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/dashboard');
     } else if (email === 'recruiter@hexaware.com') {
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/recruiter');
     } else {
       alert('Invalid credentials');
