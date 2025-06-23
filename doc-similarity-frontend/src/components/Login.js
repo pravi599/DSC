@@ -24,15 +24,38 @@ function Login() {
 
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={handleLogin}>
-        <h2>Login</h2>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Login</button>
-        <p className="register-prompt">If not registered, <Link to="/register">register here</Link>.</p>
-
-      </form>
+  <div className="auth-overlay"></div>
+  <div className="auth-wrapper">
+    <div className="auth-left">
+      <h1>Welcome to Document Similarity Comparison</h1>
+      <p>Effortlessly match job descriptions with consultant profiles. Streamline your recruitment process with precision.</p>
     </div>
+    <form className="auth-form" onSubmit={handleLogin}>
+      <h2>Login</h2>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Login</button>
+      <p className="register-prompt">
+        If not registered, <Link to="/register">register here</Link>.
+      </p>
+    </form>
+  </div>
+</div>
+
+
+
   );
 }
 
