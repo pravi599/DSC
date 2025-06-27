@@ -1,4 +1,3 @@
-// src/components/Navbar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -6,16 +5,14 @@ import './Navbar.css';
 function Navbar() {
   const navigate = useNavigate();
 
-  // Check if user is logged in (example: based on a localStorage item)
+  // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   const handleLogout = () => {
-
     localStorage.removeItem('isLoggedIn');
-    // localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
 
-    // Navigate to login page
-    navigate('/');
+    navigate('/'); // Redirect to login page
   };
 
   return (
@@ -29,9 +26,6 @@ function Navbar() {
         ) : (
           <Link to="/" className="login-button">Login</Link>
         )}
-        {/* <Link to="/register">Register</Link>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/recruiter">Recruiter</Link> */}
       </div>
     </nav>
   );

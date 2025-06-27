@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('https://cdn-icons-png.flaticon.com/512/2331/2331970.png') no-repeat center center / 150px,
-              linear-gradient(135deg, #3a7bd5, #3a6073);
+  background: url('../../public/images/17653457.png') no-repeat center center / 120px,
+              linear-gradient(135deg, #dfefff, #e6f4f1); /* Light gradient: blue to mint */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
 }
@@ -12,7 +12,7 @@
 .auth-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.5); /* lighter overlay */
   z-index: 0;
 }
 
@@ -30,7 +30,7 @@
 
 .auth-left {
   flex: 1;
-  color: #f5f5f5;
+  color: #333;
 }
 
 .auth-left h1 {
@@ -41,81 +41,57 @@
 .auth-left p {
   font-size: 18px;
   line-height: 1.6;
+  color: #555;
 }
 
 .auth-form {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 35px 30px;
   border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 360px;
-}
-.auth-form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* This will center the input fields and button horizontally */
-}
-
-.auth-form input,
-.auth-form select,
-.auth-form button {
-  max-width: 100%;
+  align-items: center;
 }
 
 .auth-form h2 {
   text-align: center;
-  color: #ffffff;
+  color: #1e3a8a;
   margin-bottom: 20px;
 }
 
-.auth-form input {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.3);
-  color: #fff;
-}
-
-.auth-form input::placeholder {
-  color: #eee;
-}
-
-.auth-form input:focus {
-  border-color: #3a7bd5;
-  background: rgba(255, 255, 255, 0.5);
-  outline: none;
-}
-
+.auth-form input,
 .auth-form select {
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 16px;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border: 1.5px solid #ccc;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.auth-form input::placeholder {
+  color: #999;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  border-color: #66ccff;
+  background: #fff;
+  outline: none;
+}
+
+.auth-form select {
   appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
-}
-
-.auth-form select option {
-  background: #3a6073; /* Matches gradient's darker side */
-  color: #fff;
-}
-
-
-.auth-form select:focus {
-  border-color: #3a7bd5;
-  background: rgba(255, 255, 255, 0.5);
-  outline: none;
 }
 
 .auth-form button {
@@ -123,7 +99,7 @@
   padding: 12px;
   border: none;
   border-radius: 12px;
-  background: #3a7bd5;
+  background: #3ab4f2;
   color: #fff;
   font-weight: 600;
   font-size: 16px;
@@ -132,24 +108,24 @@
 }
 
 .auth-form button:hover {
-  background: #29539b;
+  background: #249ad7;
   transform: translateY(-2px);
 }
 
 .register-prompt {
   text-align: center;
   margin-top: 10px;
-  color: #ddd;
+  color: #444;
 }
 
 .register-prompt a {
-  color: #90caf9;
+  color: #1976d2;
   text-decoration: none;
   font-weight: 600;
 }
 
 .register-prompt a:hover {
-  color: #64b5f6;
+  color: #0d47a1;
 }
 
 @media (max-width: 768px) {

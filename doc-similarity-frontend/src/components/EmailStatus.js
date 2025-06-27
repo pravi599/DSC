@@ -10,7 +10,6 @@ function EmailStatus() {
       topMatches: ['Alice', 'Bob', 'Cara'],
       emailSentTo: 'AR Requestor',
       status: 'Sent',
-      sentDate: '2025-06-21',
     },
     {
       id: 'JD102',
@@ -18,7 +17,6 @@ function EmailStatus() {
       topMatches: ['Dan', 'Eva', 'Frank'],
       emailSentTo: 'AR Requestor',
       status: 'Sent',
-      sentDate: '2025-06-21',
     },
     {
       id: 'JD103',
@@ -26,7 +24,6 @@ function EmailStatus() {
       topMatches: [],
       emailSentTo: 'Recruiter',
       status: 'Sent',
-      sentDate: '2025-06-20',
     },
     {
       id: 'JD104',
@@ -34,24 +31,20 @@ function EmailStatus() {
       topMatches: ['Grace', 'Heidi', 'Ivan'],
       emailSentTo: 'AR Requestor',
       status: 'Pending',
-      sentDate: '',
     },
   ];
 
   const [statusFilter, setStatusFilter] = useState('All');
-  const [dateFilter, setDateFilter] = useState('');
-
   const filteredData = jdEmailData.filter((jd) => {
     const statusMatch = statusFilter === 'All' || jd.status === statusFilter;
-    const dateMatch = !dateFilter || jd.sentDate === dateFilter;
-    return statusMatch && dateMatch;
+    return statusMatch;
   });
 
   return (
     <div className="layout">
       <Layout active="email-status" />
       <div className="content">
-        <h2>Email Notification Summary</h2>
+        <h2 className="title">Email Notification Summary</h2>
 
         <div className="filters">
           <div>
@@ -62,16 +55,7 @@ function EmailStatus() {
               <option>Pending</option>
             </select>
           </div>
-
-          <div>
-            <label>Date:</label>
-            <input
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-            />
           </div>
-        </div>
 
         <div className="status-table">
           <table>
@@ -81,7 +65,6 @@ function EmailStatus() {
                 <th>Top Matches</th>
                 <th>Email Sent To</th>
                 <th>Status</th>
-                <th>Sent Date</th>
               </tr>
             </thead>
             <tbody>
@@ -102,12 +85,11 @@ function EmailStatus() {
                     <td className={`status ${jd.status.toLowerCase()}`}>
                       {jd.status === 'Sent' ? '📤 Sent' : '⏳ Pending'}
                     </td>
-                    <td>{jd.sentDate || '-'}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="no-data">No records found</td>
+                  <td colSpan="4" className="no-data">No records found</td>
                 </tr>
               )}
             </tbody>
@@ -119,108 +101,147 @@ function EmailStatus() {
   .layout {
     display: flex;
     min-height: 100vh;
-    background: #f4f6f8;
+    background: linear-gradient(to right, #f8fafc, #e2e8f0);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 
   .content {
     flex: 1;
     padding: 30px;
+          padding-left: 0;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
+  .title {
     margin-top: 50px;
+    font-size: 25px;
+    font-weight: 700;
+    color: #0f172a;
+    background: linear-gradient(180deg, #1e293b, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
   }
 
   .filters {
     display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
     flex-wrap: wrap;
+    padding: 12px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
   }
 
   .filters label {
-    font-weight: bold;
+    font-weight: 600;
     margin-right: 6px;
+    color: #1e293b;
   }
 
   select, input[type="date"] {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+  }
+
+  select:focus, input[type="date"]:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   }
 
   .status-table table {
     width: 100%;
     border-collapse: collapse;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
     overflow: hidden;
   }
 
   th {
-    background: #1976d2; /* solid clean blue */
+    background: linear-gradient(to right, #3b82f6, #2563eb);
     color: #ffffff;
     font-weight: 600;
-    padding: 12px 15px;
+    padding: 14px 18px;
     text-align: left;
+    font-size: 15px;
+    letter-spacing: 0.3px;
   }
 
   td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f1f5f9;
     transition: background 0.2s ease;
+    font-size: 15px;
+    color: #1e293b;
   }
 
   tr:hover td {
-    background: #f0f4f8;
+    background: #f8fafc;
   }
 
   .status.sent {
-    color: #2e7d32;
-    font-weight: 600;
+    color: #16a34a;
+    font-weight: 700;
   }
 
   .status.pending {
-    color: #f57c00;
-    font-weight: 600;
+    color: #f97316;
+    font-weight: 700;
   }
 
   .no-matches {
-    color: #e53935;
+    color: #ef4444;
     font-style: italic;
     display: flex;
     align-items: center;
+    gap: 6px;
   }
 
   .info-icon {
-    margin-left: 4px;
-    color: #888;
-    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
   }
 
   .info-icon:hover {
-    color: #1976d2;
+    color: #3b82f6;
   }
 
   .no-data {
     text-align: center;
-    color: #999;
-    padding: 20px;
+    color: #9ca3af;
+    padding: 24px;
+    font-style: italic;
+    background: #fefefe;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .content {
-      padding: 15px;
+      padding: 20px 15px;
     }
 
     table {
       font-size: 14px;
     }
+
+    th, td {
+      padding: 10px 12px;
+    }
+
+    .filters {
+      padding: 16px;
+    }
   }
 `}</style>
+
 
 
     </div>

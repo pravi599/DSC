@@ -1,207 +1,105 @@
 import React, { useState } from 'react';
-import Layout from './Layout';
+import Layout from '../components/Layout';
+import JDListAndSearch from './JDListAndSearch';
+import JDDetailsView from './JDDetailsView';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './ARDashboard.css';
+
 
 const jdMockData = [
   {
     id: 'JD101',
     title: 'Frontend Developer - React',
-    fileType: 'pdf',
-    fileUrl: 'https://example.com/frontend.pdf',
     comparisonStatus: 'Completed',
-    comparisonDate: '2025-06-21 14:32',
-    topMatches: ['Alice', 'Bob', 'Clara'],
-    topMatchesDate: '2025-06-21 14:40',
+    topMatches: [
+      {
+        id: 1,
+        jdId: 101,
+        name: 'Vallela Praveena',
+        email: 'praveena.vallela2002@gmail.com',
+        experience: 2,
+        score: 90,
+        skills: 'Dotnet, SQL, React',
+      },
+      {
+        id: 2,
+        jdId: 101,
+        name: 'Alice Johnson',
+        email: 'alice.johnson@example.com',
+        experience: 3,
+        score: 85,
+        skills: 'React, Node.js, MongoDB',
+      },
+      {
+        id: 3,
+        jdId: 101,
+        name: 'Bob Smith',
+        email: 'bob.smith@example.com',
+        experience: 4,
+        score: 80,
+        skills: 'Angular, Java, SQL',
+      }
+    ],
     emailStatus: 'Sent',
-    emailDate: '2025-06-21 14:45',
   },
   {
     id: 'JD102',
     title: 'Backend Developer - Node.js',
-    fileType: 'word',
-    fileUrl: 'https://example.com/backend.docx',
     comparisonStatus: 'Completed',
-    comparisonDate: '2025-06-20 11:10',
-    topMatches: ['Dan', 'Eva', 'Frank'],
-    topMatchesDate: '2025-06-20 11:18',
-    emailStatus: 'Sent',
-    emailDate: '2025-06-20 11:22',
-  },
-  {
-    id: 'JD103',
-    title: 'Data Analyst',
-    fileType: 'excel',
-    fileUrl: 'https://example.com/data.xlsx',
-    comparisonStatus: 'In Progress',
-    comparisonDate: null,
     topMatches: [],
-    topMatchesDate: null,
-    emailStatus: 'Pending',
-    emailDate: null,
+    emailStatus: 'Sent',
   },
+  
 ];
-
-function getFileIcon(type) {
-  if (type === 'pdf') return '📑';
-  if (type === 'word') return '📝';
-  if (type === 'excel') return '📊';
-  return '📄';
-}
-
-function getStepClass(status, step) {
-  if (step === 'profiles') return status.length ? 'done' : 'notfound';
-  if (status === 'Completed' || status === 'Sent') return 'done';
-  if (status === 'In Progress' || status === 'Pending') return 'pending';
-  return 'notstarted';
-}
-
-function getStepIcon(step, status) {
-  if (step === 'comparisonStatus') return status === 'Completed' ? '✔️' : '⏳';
-  if (step === 'topMatches') return status.length ? '🏆' : '❌';
-  if (step === 'emailStatus') return status === 'Sent' ? '📤' : '⏳';
-  return '⏳';
-}
-
-function calculateOverallStatus(jd) {
-  const isComparisonDone = jd.comparisonStatus === 'Completed';
-  const isTopMatchesDone = jd.topMatches && jd.topMatches.length > 0;
-  const isEmailSent = jd.emailStatus === 'Sent';
-
-  if (isComparisonDone && isTopMatchesDone && isEmailSent) return 'Completed';
-  if (isComparisonDone || isTopMatchesDone || isEmailSent) return 'In Progress';
-  return 'Pending';
-}
 
 function ARDashboard() {
   const [selectedJD, setSelectedJD] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleFileSelect = (file) => setSelectedFile(file);
+  const handleCancel = () => {
+    setSelectedFile(null);
+    setIsModalOpen(false);
+  };
+
+  const handleCompare = () => {
+    if (!selectedFile) {
+      toast.error('Please select a file to compare.');
+      return;
+    }
+    setTimeout(() => {
+      setSelectedFile(null);
+      setIsModalOpen(false);
+    }, 1500);
+  };
+
+  const filteredJDs = jdMockData.filter((jd) =>
+    jd.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="dashboard-wrapper">
       <Layout active="dashboard" />
+      <ToastContainer />
       <div className="ar-dashboard">
-        <h2 className="dashboard-title">AR Requestor Dashboard</h2>
-
         {!selectedJD ? (
-          <div className="jd-list-grid">
-            {jdMockData.map((jd) => (
-              <div className="jd-card" key={jd.id}>
-                <div className="jd-file-row">
-                  <div className="jd-file-info">
-                    <span className="jd-file-icon">{getFileIcon(jd.fileType)}</span>
-                    <a
-                      href={jd.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {jd.title}
-                    </a>
-                  </div>
-                  <button
-                    className="view-status-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedJD(jd);
-                    }}
-                  >
-                    View Status
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <JDListAndSearch
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+            selectedFile={selectedFile}
+            handleFileSelect={handleFileSelect}
+            handleCancel={handleCancel}
+            handleCompare={handleCompare}
+            filteredJDs={filteredJDs}
+            setSelectedJD={setSelectedJD}
+          />
         ) : (
-          <div className="details-section">
-            <button className="back-button" onClick={() => setSelectedJD(null)}>
-              ← Back
-            </button>
-
-            <div className="workflow-container">
-              {['comparisonStatus', 'topMatches', 'emailStatus'].map((step, idx) => {
-                const label =
-                  step === 'comparisonStatus'
-                    ? 'JD Compared'
-                    : step === 'topMatches'
-                    ? 'Top 3 Matches'
-                    : 'Email Sent';
-
-                const className = getStepClass(selectedJD[step], step === 'topMatches' ? 'profiles' : '');
-                const icon = getStepIcon(step, selectedJD[step]);
-
-                const date =
-                  step === 'comparisonStatus'
-                    ? selectedJD.comparisonDate
-                    : step === 'topMatches'
-                    ? selectedJD.topMatchesDate
-                    : selectedJD.emailDate;
-
-                return (
-                  <div key={idx} className={`workflow-step ${className}`} title={label}>
-                    <h4>{label}</h4>
-                    <p>{icon}</p>
-                    <span className="tooltip">{selectedJD[step]}</span>
-                    {date && <div className="step-date">🕒 {date}</div>}
-                  </div>
-                );
-              })}
-
-              <div className="overall-status-badge" title="Overall Status">
-                ✅ Overall: {calculateOverallStatus(selectedJD)}
-              </div>
-            </div>
-
-            <div className="profile-section">
-              <h3>Top 3 Ranked Profiles</h3>
-              {selectedJD.topMatches.length ? (
-                <div className="profiles-grid">
-                  {selectedJD.topMatches.map((name, index) => {
-                    const categoryScores = {
-                      skills: Math.floor(Math.random() * 31 + 60),
-                      experience: Math.floor(Math.random() * 31 + 60),
-                      education: Math.floor(Math.random() * 31 + 60),
-                    };
-                    const overallScore = Math.floor(
-                      (categoryScores.skills + categoryScores.experience + categoryScores.education) / 3
-                    );
-
-                    return (
-                      <div className="profile-card enhanced" key={index}>
-                        <h4>{name}</h4>
-                        <p><strong>Email:</strong> {name.toLowerCase()}@example.com</p>
-                        <p><strong>Overall Match:</strong> {overallScore}%</p>
-                        <div className="match-bar-container">
-                          <div
-                            className="match-bar skills"
-                            style={{ width: `${categoryScores.skills}%` }}
-                            data-label={`${categoryScores.skills}%`}
-                          >
-                            Skills
-                          </div>
-                          <div
-                            className="match-bar experience"
-                            style={{ width: `${categoryScores.experience}%` }}
-                            data-label={`${categoryScores.experience}%`}
-                          >
-                            Experience
-                          </div>
-                          <div
-                            className="match-bar education"
-                            style={{ width: `${categoryScores.education}%` }}
-                            data-label={`${categoryScores.education}%`}
-                          >
-                            Education
-                          </div>
-                        </div>
-                        <p>Rank: {index + 1}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="no-profiles">No matches found.</p>
-              )}
-            </div>
-          </div>
+          <JDDetailsView selectedJD={selectedJD} setSelectedJD={setSelectedJD} />
         )}
       </div>
     </div>

@@ -10,18 +10,58 @@ function Register() {
     role: 'AR Requestor'
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    alert(`Registration successful (mock)! Name: ${formData.name}, Email: ${formData.email}, Role: ${formData.role}`);
-    // TODO: Send formData to backend or process further
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      role: formData.role
+    };
+
+    try {
+      setLoading(true);
+      const response = await fetch('https://localhost:7117/api/User', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'text/plain'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const result = await response.text(); // adjust if API returns JSON
+        alert(`Registration successful: ${result}`);
+        // Optionally reset form
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          role: 'AR Requestor'
+        });
+      } else {
+        const errorText = await response.text();
+        alert(`Registration failed: ${errorText}`);
+      }
+    } catch (error) {
+      alert(`Error occurred: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,7 +114,9 @@ function Register() {
             <option value="AR Requestor">AR Requestor</option>
             <option value="Recruiter">Recruiter</option>
           </select>
-          <button type="submit">Register</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Registering...' : 'Register'}
+          </button>
         </form>
       </div>
     </div>

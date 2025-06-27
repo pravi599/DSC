@@ -26,34 +26,34 @@ function JDCompared() {
 
   const topProfiles = {
     'React Developer': [
-      { id: 1, name: 'Alice', skills: ['React', 'JS'], similarityScore: 90 },
-      { id: 2, name: 'Bob', skills: ['React', 'Redux'], similarityScore: 88 },
-      { id: 3, name: 'Cara', skills: ['JS', 'CSS'], similarityScore: 85 },
+      { id: 1, name: 'Alice', email: 'alice@example.com', experience: 2, skills: 'React, JS', score: 90 },
+      { id: 2, name: 'Bob', email: 'bob@example.com', experience: 3, skills: 'React, Redux', score: 88 },
+      { id: 3, name: 'Cara', email: 'cara@example.com', experience: 2, skills: 'JS, CSS', score: 85 },
     ],
     'Java Developer': [
-      { id: 4, name: 'Dan', skills: ['Java', 'Spring'], similarityScore: 91 },
-      { id: 5, name: 'Eve', skills: ['Java', 'Hibernate'], similarityScore: 89 },
-      { id: 6, name: 'Frank', skills: ['Java', 'JSP'], similarityScore: 86 },
-      { id: 7, name: 'Gina', skills: ['Java', 'Microservices'], similarityScore: 83 },
-      { id: 8, name: 'Hank', skills: ['Java', 'Kafka'], similarityScore: 80 },
+      { id: 4, name: 'Dan', email: 'dan@example.com', experience: 4, skills: 'Java, Spring', score: 91 },
+      { id: 5, name: 'Eve', email: 'eve@example.com', experience: 3, skills: 'Java, Hibernate', score: 89 },
+      { id: 6, name: 'Frank', email: 'frank@example.com', experience: 5, skills: 'Java, JSP', score: 86 },
+      { id: 7, name: 'Gina', email: 'gina@example.com', experience: 4, skills: 'Java, Microservices', score: 83 },
+      { id: 8, name: 'Hank', email: 'hank@example.com', experience: 3, skills: 'Java, Kafka', score: 80 },
     ],
     'Python Engineer': [
-      { id: 9, name: 'Grace', skills: ['Python', 'Flask'], similarityScore: 92 },
-      { id: 10, name: 'Heidi', skills: ['Python', 'Django'], similarityScore: 87 },
-      { id: 11, name: 'Ivan', skills: ['ML', 'Python'], similarityScore: 84 },
-      { id: 12, name: 'Jack', skills: ['Python', 'Pandas'], similarityScore: 82 },
+      { id: 9, name: 'Grace', email: 'grace@example.com', experience: 3, skills: 'Python, Flask', score: 92 },
+      { id: 10, name: 'Heidi', email: 'heidi@example.com', experience: 4, skills: 'Python, Django', score: 87 },
+      { id: 11, name: 'Ivan', email: 'ivan@example.com', experience: 3, skills: 'ML, Python', score: 84 },
+      { id: 12, name: 'Jack', email: 'jack@example.com', experience: 2, skills: 'Python, Pandas', score: 82 },
     ],
     'Data Scientist': [
-      { id: 13, name: 'Liam', skills: ['Python', 'TensorFlow'], similarityScore: 93 },
-      { id: 14, name: 'Mia', skills: ['R', 'ML'], similarityScore: 89 },
-      { id: 15, name: 'Noah', skills: ['Python', 'Scikit-learn'], similarityScore: 88 },
-      { id: 16, name: 'Olivia', skills: ['ML', 'Pandas'], similarityScore: 85 },
-      { id: 11, name: 'Ivan', skills: ['ML', 'Python'], similarityScore: 84 },
-      { id: 12, name: 'Jack', skills: ['Python', 'Pandas'], similarityScore: 82 },
+      { id: 13, name: 'Liam', email: 'liam@example.com', experience: 5, skills: 'Python, TensorFlow', score: 93 },
+      { id: 14, name: 'Mia', email: 'mia@example.com', experience: 4, skills: 'R, ML', score: 89 },
+      { id: 15, name: 'Noah', email: 'noah@example.com', experience: 3, skills: 'Python, Scikit-learn', score: 88 },
+      { id: 16, name: 'Olivia', email: 'olivia@example.com', experience: 3, skills: 'ML, Pandas', score: 85 },
+      { id: 17, name: 'Ivan', email: 'ivan@example.com', experience: 3, skills: 'ML, Python', score: 84 },
+      { id: 18, name: 'Jack', email: 'jack@example.com', experience: 2, skills: 'Python, Pandas', score: 82 },
     ],
     'DevOps Engineer': [
-      { id: 17, name: 'Paul', skills: ['AWS', 'Docker'], similarityScore: 90 },
-      { id: 18, name: 'Quinn', skills: ['Kubernetes', 'CI/CD'], similarityScore: 87 },
+      { id: 19, name: 'Paul', email: 'paul@example.com', experience: 4, skills: 'AWS, Docker', score: 90 },
+      { id: 20, name: 'Quinn', email: 'quinn@example.com', experience: 3, skills: 'Kubernetes, CI/CD', score: 87 },
     ],
   };
 
@@ -87,46 +87,33 @@ function JDCompared() {
     <div className="layout">
       <Layout active="jd-compared" />
       <div className="content">
-        <h2>JD Compared Details</h2>
+        <h2 className="title">JD Compared Details</h2>
         <div className="chart-box">
           <Bar data={chartData} options={options} />
         </div>
 
         {selectedJD && (
           <div className="details-section">
-            <h3>Compared Profiles for {selectedJD}</h3>
+            <h3>All Compared Profiles for {selectedJD}</h3>
             <div className="profiles-grid">
-              {topProfiles[selectedJD].map((profile, index) => {
-                const scores = {
-                  skills: Math.floor(Math.random() * 21 + 80),
-                  experience: Math.floor(Math.random() * 21 + 75),
-                  education: Math.floor(Math.random() * 21 + 70),
-                };
-                const overall = Math.floor(
-                  (scores.skills + scores.experience + scores.education) / 3
-                );
-
-                return (
-                  <div key={profile.id} className="profile-card">
-                    <h4>{profile.name}</h4>
-                    <p><strong>Email:</strong> {profile.name.toLowerCase()}@example.com</p>
-                    <p><strong>Rank:</strong> {index + 1}</p>
-                    <p><strong>Overall Match:</strong> {overall}%</p>
-                    <div className="progress-container">
-                      <div className="progress-bar skills" style={{ width: `${scores.skills}%` }}>
-                        Skills: {scores.skills}%
-                      </div>
-                      <div className="progress-bar experience" style={{ width: `${scores.experience}%` }}>
-                        Experience: {scores.experience}%
-                      </div>
-                      <div className="progress-bar education" style={{ width: `${scores.education}%` }}>
-                        Education: {scores.education}%
-                      </div>
+              {topProfiles[selectedJD].map((profile, index) => (
+                <div key={profile.id} className="profile-card">
+                  <div className="profile-rank">🏅 Rank #{index + 1}</div>
+                  <h4>{profile.name}</h4>
+                  <p><strong>Email:</strong> {profile.email}</p>
+                  <p><strong>Experience:</strong> {profile.experience} years</p>
+                  <p><strong>Skills:</strong> {profile.skills}</p>
+                  <div className="match-bar-container">
+                    <div
+                      className="match-bar skills"
+                      style={{ width: `${profile.score}%` }}
+                      data-label={`${profile.score}%`}
+                    >
+                      Similarity Score
                     </div>
-                    <p><strong>Skills:</strong> {profile.skills.join(', ')}</p>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -141,11 +128,18 @@ function JDCompared() {
         .content {
           flex: 1;
           padding: 30px;
+          padding-left: 0;
         }
-        h2 {
-          margin-bottom: 20px;
-          margin-top: 50px;
-          color: #2c3e50;
+        .title {
+        margin-top: 50px;
+          font-size: 25px;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(180deg, #1e293b, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
         }
         .chart-box {
           height: 400px;
@@ -161,8 +155,8 @@ function JDCompared() {
         }
         .profiles-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 15px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
         }
         .profile-card {
           background: #fff;
@@ -175,27 +169,22 @@ function JDCompared() {
           transform: translateY(-2px);
           box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .progress-container {
-          margin: 10px 0;
+        .profile-rank {
+          font-weight: bold;
+          margin-bottom: 8px;
         }
-        .progress-bar {
-          height: 20px;
+        .match-bar-container {
+          margin-top: 10px;
+        }
+        .match-bar.skills {
+          background-color: #1976d2;
           color: #fff;
-          padding-left: 5px;
-          margin-bottom: 4px;
+          height: 22px;
           border-radius: 4px;
-          font-size: 12px;
+          padding-left: 10px;
           display: flex;
           align-items: center;
-        }
-        .skills {
-          background: #1976d2;
-        }
-        .experience {
-          background: #388e3c;
-        }
-        .education {
-          background: #f9a825;
+          font-size: 13px;
         }
       `}</style>
     </div>

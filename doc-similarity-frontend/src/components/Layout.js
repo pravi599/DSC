@@ -28,7 +28,7 @@ function Layout({ active, children }) {
         }
 
         .sidebar {
-          width: 200px;
+          width: 150px;
           background: #fff;
           box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
           padding: 20px 10px;
@@ -36,7 +36,7 @@ function Layout({ active, children }) {
           position: fixed;
           left: 0;
           bottom: 0;
-          z-index: 100;
+          z-index: 10;
         }
 
         .sidebar.collapsed {
@@ -85,7 +85,7 @@ function Layout({ active, children }) {
         @media (max-width: 768px) {
           .sidebar {
             position: absolute;
-            z-index: 1000;
+            z-index: 10;
           }
 
           .main-content {
