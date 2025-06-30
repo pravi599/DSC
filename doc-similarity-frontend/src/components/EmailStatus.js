@@ -1,75 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './Layout';
-import { Info } from 'lucide-react';
+import { Info, FileText, Users, MailCheck } from 'lucide-react';
 
 function EmailStatus() {
-  const jdEmailData = [
-    {
-      id: 'JD101',
-      title: 'Frontend Developer - React',
-      topMatches: ['Alice', 'Bob', 'Cara'],
-      emailSentTo: 'AR Requestor',
-      status: 'Sent',
-    },
-    {
-      id: 'JD102',
-      title: 'Backend Developer - Node.js',
-      topMatches: ['Dan', 'Eva', 'Frank'],
-      emailSentTo: 'AR Requestor',
-      status: 'Sent',
-    },
-    {
-      id: 'JD103',
-      title: 'Data Analyst',
-      topMatches: [],
-      emailSentTo: 'Recruiter',
-      status: 'Sent',
-    },
-    {
-      id: 'JD104',
-      title: 'Python Engineer',
-      topMatches: ['Grace', 'Heidi', 'Ivan'],
-      emailSentTo: 'AR Requestor',
-      status: 'Pending',
-    },
-  ];
-
+  const [jdEmailData, setJdEmailData] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
-  const filteredData = jdEmailData.filter((jd) => {
-    const statusMatch = statusFilter === 'All' || jd.status === statusFilter;
-    return statusMatch;
-  });
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('https://localhost:7117/api/JobDescription');
+        if (!res.ok) throw new Error('Failed to fetch JD data');
+        const data = await res.json();
+
+        const formatted = data.map((jd) => {
+          const rawStatus = jd.requestors?.[0]?.communicationStatus || 'Pending';
+          const normalizedStatus =
+            rawStatus === 'Communication Sent' ? 'Sent' :
+            rawStatus === 'Communication Failed' ? 'Failed' :
+            'Pending';
+
+          const top3 = jd.resumeDetails
+            ? jd.resumeDetails
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3)
+                .map(r => r.name)
+            : [];
+
+          return {
+            id: jd.jdId,
+            title: jd.jdTitle,
+            topMatches: top3,
+            status: normalizedStatus
+          };
+        });
+
+        setJdEmailData(formatted);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Filter logic
+  const filteredData = jdEmailData.filter(jd =>
+    statusFilter === 'All' || jd.status === statusFilter
+  );
 
   return (
     <div className="layout">
       <Layout active="email-status" />
+
       <div className="content">
-        <h2 className="title">Email Notification Summary</h2>
+        {/* <h2 className="title">📧 Email Notification Summary</h2> */}
 
         <div className="filters">
-          <div>
-            <label>Status:</label>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-              <option>All</option>
-              <option>Sent</option>
-              <option>Pending</option>
-            </select>
-          </div>
-          </div>
+          <label>Status:</label>
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option>All</option>
+            <option>Sent</option>
+            <option>Pending</option>
+            <option>Failed</option>
+          </select>
+        </div>
+
+        {error && <div className="error-msg">Error: {error}</div>}
 
         <div className="status-table">
           <table>
             <thead>
               <tr>
-                <th>JD Title</th>
-                <th>Top Matches</th>
-                <th>Email Sent To</th>
-                <th>Status</th>
+                <th>
+                  <div className="header-icon-label">
+                    <FileText size={16} />
+                    <span>JD Title</span>
+                  </div>
+                </th>
+                <th>
+                  <div className="header-icon-label">
+                    <Users size={16} />
+                    <span>Top Matches</span>
+                  </div>
+                </th>
+                <th>
+                  <div className="header-icon-label">
+                    <MailCheck size={16} />
+                    <span>Status</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
               {filteredData.length ? (
-                filteredData.map((jd) => (
+                filteredData.map(jd => (
                   <tr key={jd.id}>
                     <td>{jd.title}</td>
                     <td>
@@ -81,15 +107,18 @@ function EmailStatus() {
                         </span>
                       )}
                     </td>
-                    <td>{jd.emailSentTo}</td>
                     <td className={`status ${jd.status.toLowerCase()}`}>
-                      {jd.status === 'Sent' ? '📤 Sent' : '⏳ Pending'}
+                      {jd.status === 'Sent'
+                        ? '📤 Sent'
+                        : jd.status === 'Failed'
+                        ? '❌ Failed'
+                        : '⏳ Pending'}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="no-data">No records found</td>
+                  <td colSpan="3" className="no-data">No records found</td>
                 </tr>
               )}
             </tbody>
@@ -98,152 +127,139 @@ function EmailStatus() {
       </div>
 
       <style jsx>{`
-  .layout {
-    display: flex;
-    min-height: 100vh;
-    background: linear-gradient(to right, #f8fafc, #e2e8f0);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+        .layout {
+          display: flex;
+          min-height: 100vh;
+          background: #f1f5f9;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  .content {
-    flex: 1;
-    padding: 30px;
+        .content {
+          flex: 1;
+          padding: 30px;
           padding-left: 0;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+          max-width: 1200px;
+          margin: 0 auto;
+        }
 
-  .title {
-    margin-top: 50px;
-    font-size: 25px;
-    font-weight: 700;
-    color: #0f172a;
-    background: linear-gradient(180deg, #1e293b, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-  }
+        .title {
+          margin-top: 40px;
+          font-size: 26px;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 20px;
+        }
 
-  .filters {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 24px;
-    flex-wrap: wrap;
-    padding: 12px 20px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  }
+        .filters {
+        margin-top: 60px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 20px;
+          background: #ffffff;
+          border-radius: 12px;
+          box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
 
-  .filters label {
-    font-weight: 600;
-    margin-right: 6px;
-    color: #1e293b;
-  }
+        select {
+          padding: 8px 14px;
+          border-radius: 8px;
+          border: 1px solid #d1d5db;
+          font-size: 15px;
+          outline: none;
+        }
 
-  select, input[type="date"] {
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    font-size: 15px;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    outline: none;
-  }
+        .status-table table {
+          width: 100%;
+          border-collapse: collapse;
+          background: #ffffff;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+        }
 
-  select:focus, input[type="date"]:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-  }
+        th {
+          background: linear-gradient(to right, #3b82f6, #2563eb);
+          color: #ffffff;
+          font-weight: 600;
+          padding: 14px 18px;
+          text-align: left;
+          font-size: 15px;
+        }
 
-  .status-table table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
-  }
+        .header-icon-label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
 
-  th {
-    background: linear-gradient(to right, #3b82f6, #2563eb);
-    color: #ffffff;
-    font-weight: 600;
-    padding: 14px 18px;
-    text-align: left;
-    font-size: 15px;
-    letter-spacing: 0.3px;
-  }
+        td {
+          padding: 14px 18px;
+          border-bottom: 1px solid #f1f5f9;
+          font-size: 15px;
+          color: #1e293b;
+        }
 
-  td {
-    padding: 14px 18px;
-    border-bottom: 1px solid #f1f5f9;
-    transition: background 0.2s ease;
-    font-size: 15px;
-    color: #1e293b;
-  }
+        tr:hover td {
+          background: #f8fafc;
+        }
 
-  tr:hover td {
-    background: #f8fafc;
-  }
+        .status.sent {
+          color: #16a34a;
+          font-weight: bold;
+        }
 
-  .status.sent {
-    color: #16a34a;
-    font-weight: 700;
-  }
+        .status.pending {
+          color: #f59e0b;
+          font-weight: bold;
+        }
 
-  .status.pending {
-    color: #f97316;
-    font-weight: 700;
-  }
+        .status.failed {
+          color: #dc2626;
+          font-weight: bold;
+        }
 
-  .no-matches {
-    color: #ef4444;
-    font-style: italic;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+        .no-matches {
+          color: #ef4444;
+          font-style: italic;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
 
-  .info-icon {
-    color: #6b7280;
-    transition: color 0.2s ease;
-  }
+        .info-icon {
+          color: #6b7280;
+        }
 
-  .info-icon:hover {
-    color: #3b82f6;
-  }
+        .no-data {
+          text-align: center;
+          color: #9ca3af;
+          padding: 24px;
+          font-style: italic;
+        }
 
-  .no-data {
-    text-align: center;
-    color: #9ca3af;
-    padding: 24px;
-    font-style: italic;
-    background: #fefefe;
-  }
+        .error-msg {
+          color: red;
+          margin-bottom: 20px;
+          font-weight: 600;
+        }
 
-  @media (max-width: 768px) {
-    .content {
-      padding: 20px 15px;
-    }
+        @media (max-width: 768px) {
+          .content {
+            padding: 20px 15px;
+          }
 
-    table {
-      font-size: 14px;
-    }
+          th, td {
+            padding: 10px 12px;
+          }
 
-    th, td {
-      padding: 10px 12px;
-    }
-
-    .filters {
-      padding: 16px;
-    }
-  }
-`}</style>
-
-
-
+          .filters {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

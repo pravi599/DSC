@@ -1,4 +1,3 @@
-// src/components/FileUpload.js
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './FileUpload.css';
@@ -26,28 +25,32 @@ function FileUpload({ onFileSelect, onCancel, onCompare, selectedFile }) {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      const response = await fetch('https://localhost:7117/api/DocSimilarityComparison', {
+      const email = localStorage.getItem('userEmail') || '';
+      const apiUrl = `https://localhost:7117/api/DocSimilarityComparison?RequestorEmailId=${encodeURIComponent(email)}`;
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Upload failed');
+        const errorText = await response.text();
+        throw new Error(`Upload failed: ${errorText}`);
       }
 
       const data = await response.json();
-      console.log('File uploaded successfully:', data);
+      console.log('✅ File uploaded successfully:', data);
 
       toast.dismiss();
       toast.success(`✅ File uploaded: ${selectedFile.name}`);
 
       if (onCompare) onCompare(data);
-      onCancel(); // ✅ Close the modal on success
+      onCancel();
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('❌ Upload error:', error);
       toast.dismiss();
       toast.error(`❌ Upload failed: ${selectedFile?.name || 'File'}`);
-      onCancel(); // ✅ Close the modal on failure too
+      onCancel();
     } finally {
       setIsUploading(false);
     }

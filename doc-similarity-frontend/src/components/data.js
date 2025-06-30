@@ -102,4 +102,5 @@ export const jobDescription = {
   id: 1,
   title: "React Developer",
   skills: ["React", "JavaScript", "REST API", "CSS"]
-};
+};npm start
+

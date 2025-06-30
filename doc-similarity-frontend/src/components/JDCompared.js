@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -14,51 +14,35 @@ import Layout from './Layout';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function JDCompared() {
+  const [jdData, setJdData] = useState([]);
   const [selectedJD, setSelectedJD] = useState(null);
+  const [error, setError] = useState('');
 
-  const jdData = [
-    { id: 'React Developer', count: 3 },
-    { id: 'Java Developer', count: 5 },
-    { id: 'Python Engineer', count: 4 },
-    { id: 'Data Scientist', count: 6 },
-    { id: 'DevOps Engineer', count: 2 },
-  ];
+  useEffect(() => {
+    const fetchJDData = async () => {
+      try {
+        const res = await fetch('https://localhost:7117/api/JobDescription');
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
 
-  const topProfiles = {
-    'React Developer': [
-      { id: 1, name: 'Alice', email: 'alice@example.com', experience: 2, skills: 'React, JS', score: 90 },
-      { id: 2, name: 'Bob', email: 'bob@example.com', experience: 3, skills: 'React, Redux', score: 88 },
-      { id: 3, name: 'Cara', email: 'cara@example.com', experience: 2, skills: 'JS, CSS', score: 85 },
-    ],
-    'Java Developer': [
-      { id: 4, name: 'Dan', email: 'dan@example.com', experience: 4, skills: 'Java, Spring', score: 91 },
-      { id: 5, name: 'Eve', email: 'eve@example.com', experience: 3, skills: 'Java, Hibernate', score: 89 },
-      { id: 6, name: 'Frank', email: 'frank@example.com', experience: 5, skills: 'Java, JSP', score: 86 },
-      { id: 7, name: 'Gina', email: 'gina@example.com', experience: 4, skills: 'Java, Microservices', score: 83 },
-      { id: 8, name: 'Hank', email: 'hank@example.com', experience: 3, skills: 'Java, Kafka', score: 80 },
-    ],
-    'Python Engineer': [
-      { id: 9, name: 'Grace', email: 'grace@example.com', experience: 3, skills: 'Python, Flask', score: 92 },
-      { id: 10, name: 'Heidi', email: 'heidi@example.com', experience: 4, skills: 'Python, Django', score: 87 },
-      { id: 11, name: 'Ivan', email: 'ivan@example.com', experience: 3, skills: 'ML, Python', score: 84 },
-      { id: 12, name: 'Jack', email: 'jack@example.com', experience: 2, skills: 'Python, Pandas', score: 82 },
-    ],
-    'Data Scientist': [
-      { id: 13, name: 'Liam', email: 'liam@example.com', experience: 5, skills: 'Python, TensorFlow', score: 93 },
-      { id: 14, name: 'Mia', email: 'mia@example.com', experience: 4, skills: 'R, ML', score: 89 },
-      { id: 15, name: 'Noah', email: 'noah@example.com', experience: 3, skills: 'Python, Scikit-learn', score: 88 },
-      { id: 16, name: 'Olivia', email: 'olivia@example.com', experience: 3, skills: 'ML, Pandas', score: 85 },
-      { id: 17, name: 'Ivan', email: 'ivan@example.com', experience: 3, skills: 'ML, Python', score: 84 },
-      { id: 18, name: 'Jack', email: 'jack@example.com', experience: 2, skills: 'Python, Pandas', score: 82 },
-    ],
-    'DevOps Engineer': [
-      { id: 19, name: 'Paul', email: 'paul@example.com', experience: 4, skills: 'AWS, Docker', score: 90 },
-      { id: 20, name: 'Quinn', email: 'quinn@example.com', experience: 3, skills: 'Kubernetes, CI/CD', score: 87 },
-    ],
-  };
+        const formatted = data.filter(jd => jd.resumeDetails?.length).map(jd => ({
+          id: jd.jdId,
+          title: jd.jdTitle,
+          count: jd.resumeDetails.length,
+          resumes: [...jd.resumeDetails].sort((a, b) => b.score - a.score),
+        }));
+
+        setJdData(formatted);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchJDData();
+  }, []);
 
   const chartData = {
-    labels: jdData.map(jd => jd.id),
+    labels: jdData.map(jd => jd.title),
     datasets: [
       {
         label: 'Compared Profiles',
@@ -78,7 +62,7 @@ function JDCompared() {
     onClick: (event, elements) => {
       if (elements.length > 0) {
         const index = elements[0].index;
-        setSelectedJD(jdData[index].id);
+        setSelectedJD(jdData[index]);
       }
     },
   };
@@ -87,16 +71,19 @@ function JDCompared() {
     <div className="layout">
       <Layout active="jd-compared" />
       <div className="content">
-        <h2 className="title">JD Compared Details</h2>
+        {/* <h2 className="title">JD Compared Details</h2> */}
+
+        {error && <div className="error-msg">Error: {error}</div>}
+
         <div className="chart-box">
           <Bar data={chartData} options={options} />
         </div>
 
         {selectedJD && (
           <div className="details-section">
-            <h3>All Compared Profiles for {selectedJD}</h3>
+            <h3>All Compared Profiles for {selectedJD.title}</h3>
             <div className="profiles-grid">
-              {topProfiles[selectedJD].map((profile, index) => (
+              {selectedJD.resumes.map((profile, index) => (
                 <div key={profile.id} className="profile-card">
                   <div className="profile-rank">🏅 Rank #{index + 1}</div>
                   <h4>{profile.name}</h4>
@@ -107,9 +94,9 @@ function JDCompared() {
                     <div
                       className="match-bar skills"
                       style={{ width: `${profile.score}%` }}
-                      data-label={`${profile.score}%`}
+                      data-label={`${profile.score.toFixed(2)}%`}
                     >
-                      Similarity Score
+                      Score
                     </div>
                   </div>
                 </div>
@@ -131,17 +118,23 @@ function JDCompared() {
           padding-left: 0;
         }
         .title {
-        margin-top: 50px;
+          margin-top: 50px;
           font-size: 25px;
-  font-weight: 700;
-  color: #0f172a;
-  background: linear-gradient(180deg, #1e293b, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
+          font-weight: 700;
+          color: #0f172a;
+          background: linear-gradient(180deg, #1e293b, #3b82f6);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          letter-spacing: -0.5px;
+        }
+        .error-msg {
+          color: red;
+          margin-bottom: 20px;
+          font-weight: bold;
         }
         .chart-box {
+        margin-top: 50px;
           height: 400px;
           background: #fff;
           padding: 20px;
@@ -155,7 +148,7 @@ function JDCompared() {
         }
         .profiles-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 20px;
         }
         .profile-card {
@@ -172,6 +165,7 @@ function JDCompared() {
         .profile-rank {
           font-weight: bold;
           margin-bottom: 8px;
+          color: #2563eb;
         }
         .match-bar-container {
           margin-top: 10px;
@@ -185,6 +179,13 @@ function JDCompared() {
           display: flex;
           align-items: center;
           font-size: 13px;
+          position: relative;
+        }
+        .match-bar.skills::after {
+          content: attr(data-label);
+          position: absolute;
+          right: 10px;
+          font-size: 12px;
         }
       `}</style>
     </div>

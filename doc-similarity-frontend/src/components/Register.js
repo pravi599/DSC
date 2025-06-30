@@ -43,9 +43,8 @@ function Register() {
       });
 
       if (response.ok) {
-        const result = await response.text(); // adjust if API returns JSON
-        alert(`Registration successful: ${result}`);
-        // Optionally reset form
+        const result = await response.text();
+        alert(`${result}`);
         setFormData({
           name: '',
           email: '',

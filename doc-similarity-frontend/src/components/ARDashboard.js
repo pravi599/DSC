@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Layout from '../components/Layout';
 import JDListAndSearch from './JDListAndSearch';
 import JDDetailsView from './JDDetailsView';
@@ -6,54 +7,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './ARDashboard.css';
 
-
-const jdMockData = [
-  {
-    id: 'JD101',
-    title: 'Frontend Developer - React',
-    comparisonStatus: 'Completed',
-    topMatches: [
-      {
-        id: 1,
-        jdId: 101,
-        name: 'Vallela Praveena',
-        email: 'praveena.vallela2002@gmail.com',
-        experience: 2,
-        score: 90,
-        skills: 'Dotnet, SQL, React',
-      },
-      {
-        id: 2,
-        jdId: 101,
-        name: 'Alice Johnson',
-        email: 'alice.johnson@example.com',
-        experience: 3,
-        score: 85,
-        skills: 'React, Node.js, MongoDB',
-      },
-      {
-        id: 3,
-        jdId: 101,
-        name: 'Bob Smith',
-        email: 'bob.smith@example.com',
-        experience: 4,
-        score: 80,
-        skills: 'Angular, Java, SQL',
-      }
-    ],
-    emailStatus: 'Sent',
-  },
-  {
-    id: 'JD102',
-    title: 'Backend Developer - Node.js',
-    comparisonStatus: 'Completed',
-    topMatches: [],
-    emailStatus: 'Sent',
-  },
-  
-];
-
 function ARDashboard() {
+  const [jdData, setJdData] = useState([]);
   const [selectedJD, setSelectedJD] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -76,7 +31,37 @@ function ARDashboard() {
     }, 1500);
   };
 
-  const filteredJDs = jdMockData.filter((jd) =>
+  useEffect(() => {
+    axios
+      .get('https://localhost:7117/api/JobDescription')
+      .then((res) => {
+        const mapped = res.data.map((jd) => ({
+          id: jd.jdId,
+          title: jd.jdTitle,
+          comparisonStatus: jd.requestors?.[0]?.comparisonStatus || 'Pending',
+          emailStatus: jd.requestors?.[0]?.communicationStatus || 'Pending',
+          topMatches: jd.resumeDetails
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 3)
+            .map((res) => ({
+              id: res.id,
+              jdId: res.jdId,
+              name: res.name,
+              email: res.email,
+              experience: res.experience,
+              skills: res.skills,
+              score: Math.round(Number(res.score) * 100) / 100,
+            })),
+        }));
+        setJdData(mapped);
+      })
+      .catch((err) => {
+        console.error('Error fetching JDs:', err);
+        toast.error('Failed to load job descriptions');
+      });
+  }, []);
+
+  const filteredJDs = jdData.filter((jd) =>
     jd.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

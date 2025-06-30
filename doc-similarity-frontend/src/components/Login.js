@@ -12,7 +12,7 @@ function Login() {
     e.preventDefault();
 
     const payload = {
-      id: 0, // As per your curl, though probably unnecessary
+      id: 0,
       name: '',
       role: '',
       email: email,
@@ -31,9 +31,12 @@ function Login() {
       });
 
       if (response.ok) {
-        const result = await response.json(); // Assuming API returns user info
+        const result = await response.json();
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', result.role || ''); // Save role if returned
+        localStorage.setItem('userEmail', result.email)
+        const eemail = localStorage.getItem('userEmail');
+        console.log(eemail)
+        localStorage.setItem('userRole', result.role || '');
 
         // Navigate based on role
         if (result.role === 'AR Requestor') {
@@ -41,7 +44,7 @@ function Login() {
         } else if (result.role === 'Recruiter') {
           navigate('/recruiter');
         } else {
-          navigate('/dashboard'); // Fallback
+          navigate('/dashboard');
         }
 
         alert('Login successful!');

@@ -19,7 +19,7 @@ function JDListAndSearch({
   return (
     <>
       <div className="dashboard-header">
-        <h2 className="dashboard-title">AR Requestor Dashboard</h2>
+        {/* <h2 className="dashboard-title">AR Requestor Dashboard</h2> */}
         <button onClick={() => setIsModalOpen(true)} className="add-jd-btn">
           <Plus className="w-5 h-5 mr-2" /> Add JD
         </button>

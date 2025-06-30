@@ -1,5 +1,3 @@
-/* FileUpload.css */
-
 .file-upload-box {
   display: flex;
   flex-direction: column;
@@ -75,7 +73,6 @@
   background: #ef4444;
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .upload-buttons {
     flex-direction: column;

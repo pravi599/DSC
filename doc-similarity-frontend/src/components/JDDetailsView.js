@@ -3,22 +3,22 @@ import './ARDashboard.css';
 
 function getStepClass(status, step) {
   if (step === 'profiles') return status.length ? 'done' : 'notfound';
-  if (status === 'Completed' || status === 'Sent') return 'done';
-  if (status === 'In Progress' || status === 'Pending') return 'pending';
+  if (status === 'Comparision Completed' || status === 'Communication Sent') return 'done';
+  if (status === 'In Progress' || status === 'Communication Failed') return 'pending';
   return 'notstarted';
 }
 
 function getStepIcon(step, status) {
-  if (step === 'comparisonStatus') return status === 'Completed' ? '✔️' : '⏳';
+  if (step === 'comparisonStatus') return status === 'Comparision Completed' ? '✔️' : '⏳';
   if (step === 'topMatches') return status.length ? '🏆' : '❌';
-  if (step === 'emailStatus') return status === 'Sent' ? '📤' : '⏳';
+  if (step === 'emailStatus') return status === 'Communication Sent' ? '📤' : '⏳';
   return '⏳';
 }
 
 function calculateOverallStatus(jd) {
-  const isComparisonDone = jd.comparisonStatus === 'Completed';
+  const isComparisonDone = jd.comparisonStatus === 'Comparision Completed';
   const isTopMatchesDone = jd.topMatches && jd.topMatches.length > 0;
-  const isEmailSent = jd.emailStatus === 'Sent';
+  const isEmailSent = jd.emailStatus === 'Communication Sent';
 
   if (isComparisonDone && isTopMatchesDone && isEmailSent) return 'Completed';
   if (isComparisonDone || isTopMatchesDone || isEmailSent) return 'In Progress';
@@ -26,6 +26,10 @@ function calculateOverallStatus(jd) {
 }
 
 function JDDetailsView({ selectedJD, setSelectedJD }) {
+  const sortedTop3 = [...selectedJD.topMatches]
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
   return (
     <div className="details-section">
       <button className="back-button" onClick={() => setSelectedJD(null)}>
@@ -62,9 +66,9 @@ function JDDetailsView({ selectedJD, setSelectedJD }) {
 
       <div className="profile-section">
         <h3>Top 3 Ranked Profiles</h3>
-        {selectedJD.topMatches.length ? (
+        {sortedTop3.length ? (
           <div className="profiles-grid">
-            {selectedJD.topMatches.map((match, index) => (
+            {sortedTop3.map((match, index) => (
               <div className="profile-card enhanced uniform" key={match.id}>
                 <div className="profile-rank">🏅 Rank #{index + 1}</div>
                 <h4>{match.name}</h4>
@@ -75,9 +79,9 @@ function JDDetailsView({ selectedJD, setSelectedJD }) {
                   <div
                     className="match-bar skills"
                     style={{ width: `${match.score}%` }}
-                    data-label={`${match.score}%`}
+                    data-label={`${match.score.toFixed(2)}%`}
                   >
-                    Similarity Score
+                    Score
                   </div>
                 </div>
               </div>

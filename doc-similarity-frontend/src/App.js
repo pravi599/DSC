@@ -8,6 +8,7 @@ import ARDashboard from './components/ARDashboard';
 import EmailStatus from './components/EmailStatus';
 import JDCompared from './components/JDCompared';
 import PrivateRoute from './components/PrivateRoute';
+import JDReportPage from './components/JDReportPage';
 
 function App() {
   return (
@@ -46,6 +47,14 @@ function App() {
           element={
             <PrivateRoute>
               <JDCompared />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/jd-report" 
+          element={
+            <PrivateRoute>
+              <JDReportPage />
             </PrivateRoute>
           } 
         />
