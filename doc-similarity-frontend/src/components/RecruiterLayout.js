@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
 function Layout({ active, children }) {
   const [collapsed, setCollapsed] = useState(false);
   const navbarHeight = 60;
- 
+
   return (
     <div className="layout-container">
       <div className={`sidebar ${collapsed ? 'collapsed' : ''}`} style={{ top: `${navbarHeight}px` }}>
@@ -11,22 +12,34 @@ function Layout({ active, children }) {
           ☰
         </button>
         <nav>
-        <NavLink to="/recruiter" className={active === 'recruiter' ? 'active' : ''}>Recruiter Console</NavLink>
-        <NavLink to="/jd-report" className={active === 'jd-report' ? 'active' : ''}>JD Report</NavLink>
+          <NavLink
+            to="/recruiter"
+            className={active === 'recruiter' ? 'active' : ''}
+            title="Home"
+          >
+            🏠 <span className="link-text">Home</span>
+          </NavLink>
+          <NavLink
+            to="/jd-report"
+            className={active === 'jd-report' ? 'active' : ''}
+            title="Reports"
+          >
+            📁 <span className="link-text">Reports</span>
+          </NavLink>
         </nav>
       </div>
- 
+
       <div className={`main-content ${collapsed ? 'collapsed' : ''}`} style={{ marginTop: `${navbarHeight}px` }}>
         {children}
       </div>
- 
+
       <style jsx>{`
         .layout-container {
           display: flex;
         }
 
         .sidebar {
-          width: 150px;
+          width: 180px;
           background: #fff;
           box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
           padding: 20px 10px;
@@ -35,6 +48,7 @@ function Layout({ active, children }) {
           left: 0;
           bottom: 0;
           z-index: 10;
+          height: 100vh;
         }
 
         .sidebar.collapsed {
@@ -52,21 +66,33 @@ function Layout({ active, children }) {
         }
 
         nav a {
-          display: block;
+          display: flex;
+          align-items: center;
           margin: 16px 0;
           text-decoration: none;
           color: #333;
           font-weight: 500;
-          white-space: nowrap;
           transition: 0.2s ease;
+          padding: 8px;
+          border-radius: 6px;
         }
 
-        .sidebar.collapsed nav a {
-          font-size: 0;
+        nav a:hover {
+          background: #f0f4ff;
         }
 
         nav a.active {
           color: #1976d2;
+          background: #e3f2fd;
+        }
+
+        .link-text {
+          margin-left: 10px;
+          white-space: nowrap;
+        }
+
+        .sidebar.collapsed .link-text {
+          display: none;
         }
 
         .main-content {
@@ -94,5 +120,5 @@ function Layout({ active, children }) {
     </div>
   );
 }
- 
+
 export default Layout;

@@ -3,20 +3,20 @@ import './ARDashboard.css';
 
 function getStepClass(status, step) {
   if (step === 'profiles') return status.length ? 'done' : 'notfound';
-  if (status === 'Comparision Completed' || status === 'Communication Sent') return 'done';
+  if (status === 'Comparison Completed' || status === 'Communication Sent') return 'done';
   if (status === 'In Progress' || status === 'Communication Failed') return 'pending';
   return 'notstarted';
 }
 
 function getStepIcon(step, status) {
-  if (step === 'comparisonStatus') return status === 'Comparision Completed' ? '✔️' : '⏳';
+  if (step === 'comparisonStatus') return status === 'Comparison Completed' ? '✔️' : '⏳';
   if (step === 'topMatches') return status.length ? '🏆' : '❌';
   if (step === 'emailStatus') return status === 'Communication Sent' ? '📤' : '⏳';
   return '⏳';
 }
 
 function calculateOverallStatus(jd) {
-  const isComparisonDone = jd.comparisonStatus === 'Comparision Completed';
+  const isComparisonDone = jd.comparisonStatus === 'Comparison Completed';
   const isTopMatchesDone = jd.topMatches && jd.topMatches.length > 0;
   const isEmailSent = jd.emailStatus === 'Communication Sent';
 

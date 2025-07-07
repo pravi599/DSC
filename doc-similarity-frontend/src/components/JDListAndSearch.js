@@ -33,6 +33,7 @@ function JDListAndSearch({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <span></span>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={handleCancel} title="Add New Job Description">

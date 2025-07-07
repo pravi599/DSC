@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LoginRegister.css';
+import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash, FaUserTag } from 'react-icons/fa';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -9,28 +11,38 @@ function Register() {
     confirmPassword: '',
     role: 'AR Requestor'
   });
-
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError('');
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
       return;
     }
-
+    if (!formData.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
     const payload = {
       name: formData.name,
       email: formData.email,
       password: formData.password,
       role: formData.role
     };
-
     try {
       setLoading(true);
       const response = await fetch('https://localhost:7117/api/User', {
@@ -41,10 +53,7 @@ function Register() {
         },
         body: JSON.stringify(payload)
       });
-
       if (response.ok) {
-        const result = await response.text();
-        alert(`${result}`);
         setFormData({
           name: '',
           email: '',
@@ -52,69 +61,100 @@ function Register() {
           confirmPassword: '',
           role: 'AR Requestor'
         });
+        navigate('/');
       } else {
         const errorText = await response.text();
-        alert(`Registration failed: ${errorText}`);
+        setError(`Registration failed: ${errorText}`);
       }
     } catch (error) {
-      alert(`Error occurred: ${error.message}`);
+      setError(`Error occurred: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container fade-in">
       <div className="auth-overlay"></div>
       <div className="auth-wrapper">
         <div className="auth-left">
+          {/* <div className="auth-logo">
+            <img src="/logo192.png" alt="Logo" />
+            <span>DocSim</span>
+          </div> */}
           <h1>Welcome to Document Similarity Comparison</h1>
           <p>Effortlessly match job descriptions with consultant profiles. Streamline your recruitment process with precision.</p>
         </div>
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSubmit} autoComplete="on">
           <h2>Register</h2>
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            required
-          >
-            <option value="AR Requestor">AR Requestor</option>
-            <option value="Recruiter">Recruiter</option>
-          </select>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
+          {error && <div className="auth-error">{error}</div>}
+          <div className="input-group">
+            <span className="input-icon"><FaUser /></span>
+            <input
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              autoComplete="name"
+            />
+          </div>
+          <div className="input-group">
+            <span className="input-icon"><FaEnvelope /></span>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              autoComplete="email"
+            />
+          </div>
+          <div className="input-group">
+            <span className="input-icon"><FaLock /></span>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              autoComplete="new-password"
+            />
+            <span className="input-icon input-eye" onClick={() => setShowPassword((v) => !v)} tabIndex={0} role="button" aria-label="Toggle password visibility">
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <div className="input-group">
+            <span className="input-icon"><FaLock /></span>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              autoComplete="new-password"
+            />
+            <span className="input-icon input-eye" onClick={() => setShowConfirmPassword((v) => !v)} tabIndex={0} role="button" aria-label="Toggle confirm password visibility">
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <div className="input-group">
+            <span className="input-icon"><FaUserTag /></span>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            >
+              <option value="AR Requestor">AR Requestor</option>
+              <option value="Recruiter">Recruiter</option>
+            </select>
+          </div>
+          <button type="submit" disabled={loading} className="auth-btn">
+            {loading ? <span className="spinner"></span> : 'Register'}
           </button>
         </form>
       </div>

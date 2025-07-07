@@ -12,9 +12,27 @@ function Layout({ active, children }) {
           ☰
         </button>
         <nav>
-          <NavLink to="/dashboard" className={active === 'dashboard' ? 'active' : ''}>Dashboard</NavLink>
-          <NavLink to="/jd-compared" className={active === 'jd-compared' ? 'active' : ''}>JD Compared</NavLink>
-          <NavLink to="/email-status" className={active === 'email-status' ? 'active' : ''}>Email Status</NavLink>
+          <NavLink
+            to="/dashboard"
+            className={active === 'dashboard' ? 'active' : ''}
+            title="Home"
+          >
+            🏠 <span className="link-text">Home</span>
+          </NavLink>
+          <NavLink
+            to="/jd-compared"
+            className={active === 'jd-compared' ? 'active' : ''}
+            title="Compared Profiles"
+          >
+            📄 <span className="link-text">Compared Profiles</span>
+          </NavLink>
+          <NavLink
+            to="/email-status"
+            className={active === 'email-status' ? 'active' : ''}
+            title="Notification Status"
+          >
+            📬 <span className="link-text">Notification Status</span>
+          </NavLink>
         </nav>
       </div>
 
@@ -28,7 +46,7 @@ function Layout({ active, children }) {
         }
 
         .sidebar {
-          width: 150px;
+          width: 180px;
           background: #fff;
           box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
           padding: 20px 10px;
@@ -37,6 +55,8 @@ function Layout({ active, children }) {
           left: 0;
           bottom: 0;
           z-index: 10;
+          height: 100vh;
+          overflow-y: auto;
         }
 
         .sidebar.collapsed {
@@ -54,21 +74,33 @@ function Layout({ active, children }) {
         }
 
         nav a {
-          display: block;
+          display: flex;
+          align-items: center;
           margin: 16px 0;
           text-decoration: none;
           color: #333;
           font-weight: 500;
-          white-space: nowrap;
           transition: 0.2s ease;
+          padding: 8px;
+          border-radius: 6px;
         }
 
-        .sidebar.collapsed nav a {
-          font-size: 0;
+        nav a:hover {
+          background: #f0f4ff;
         }
 
         nav a.active {
           color: #1976d2;
+          background: #e3f2fd;
+        }
+
+        .link-text {
+          margin-left: 10px;
+          white-space: nowrap;
+        }
+
+        .sidebar.collapsed .link-text {
+          display: none;
         }
 
         .main-content {

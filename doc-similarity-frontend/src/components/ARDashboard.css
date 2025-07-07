@@ -53,14 +53,14 @@
   overflow: hidden;
 }
 
-.add-jd-btn::before {
+/* .add-jd-btn::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #60a5fa, #3b82f6);
   opacity: 0;
   transition: opacity 0.3s ease;
-}
+} */
 
 .add-jd-btn:hover {
   transform: translateY(-2px);

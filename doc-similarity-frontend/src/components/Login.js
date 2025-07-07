@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import './LoginRegister.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
 
     const payload = {
       id: 0,
@@ -34,11 +38,7 @@ function Login() {
         const result = await response.json();
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userEmail', result.email)
-        const eemail = localStorage.getItem('userEmail');
-        console.log(eemail)
         localStorage.setItem('userRole', result.role || '');
-
-        // Navigate based on role
         if (result.role === 'AR Requestor') {
           navigate('/dashboard');
         } else if (result.role === 'Recruiter') {
@@ -46,45 +46,59 @@ function Login() {
         } else {
           navigate('/dashboard');
         }
-
-        alert('Login successful!');
       } else {
         const errorText = await response.text();
-        alert(`Login failed: ${errorText}`);
+        setError(`Login failed: ${errorText}`);
       }
     } catch (error) {
-      alert(`Error: ${error.message}`);
+      setError(`Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container fade-in">
       <div className="auth-overlay"></div>
       <div className="auth-wrapper">
         <div className="auth-left">
+          {/* <div className="auth-logo">
+            <img src="/logo192.png" alt="Logo" />
+            <span>DocSim</span>
+          </div> */}
           <h1>Welcome to Document Similarity Comparison</h1>
           <p>Effortlessly match job descriptions with consultant profiles. Streamline your recruitment process with precision.</p>
         </div>
-        <form className="auth-form" onSubmit={handleLogin}>
+        <form className="auth-form" onSubmit={handleLogin} autoComplete="on">
           <h2>Login</h2>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+          {error && <div className="auth-error">{error}</div>}
+          <div className="input-group">
+            <span className="input-icon"><FaEnvelope /></span>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="username"
+            />
+          </div>
+          <div className="input-group">
+            <span className="input-icon"><FaLock /></span>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
+            <span className="input-icon input-eye" onClick={() => setShowPassword((v) => !v)} tabIndex={0} role="button" aria-label="Toggle password visibility">
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <button type="submit" disabled={loading} className="auth-btn">
+            {loading ? <span className="spinner"></span> : 'Login'}
           </button>
           <p className="register-prompt">
             If not registered, <Link to="/register">register here</Link>.
