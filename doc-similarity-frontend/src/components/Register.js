@@ -78,16 +78,13 @@ function Register() {
       <div className="auth-overlay"></div>
       <div className="auth-wrapper">
         <div className="auth-left">
-          {/* <div className="auth-logo">
-            <img src="/logo192.png" alt="Logo" />
-            <span>DocSim</span>
-          </div> */}
-          <h1>Welcome to Document Similarity Comparison</h1>
-          <p>Effortlessly match job descriptions with consultant profiles. Streamline your recruitment process with precision.</p>
+          <h1>Join Document Similarity Comparison</h1>
+          <p>Register to streamline your hiring process by comparing JDs with consultant resumes in seconds.</p>
         </div>
         <form className="auth-form" onSubmit={handleSubmit} autoComplete="on">
           <h2>Register</h2>
           {error && <div className="auth-error">{error}</div>}
+
           <div className="input-group">
             <span className="input-icon"><FaUser /></span>
             <input
@@ -99,6 +96,7 @@ function Register() {
               autoComplete="name"
             />
           </div>
+
           <div className="input-group">
             <span className="input-icon"><FaEnvelope /></span>
             <input
@@ -111,6 +109,7 @@ function Register() {
               autoComplete="email"
             />
           </div>
+
           <div className="input-group">
             <span className="input-icon"><FaLock /></span>
             <input
@@ -126,6 +125,7 @@ function Register() {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+
           <div className="input-group">
             <span className="input-icon"><FaLock /></span>
             <input
@@ -141,6 +141,7 @@ function Register() {
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+
           <div className="input-group">
             <span className="input-icon"><FaUserTag /></span>
             <select
@@ -153,6 +154,7 @@ function Register() {
               <option value="Recruiter">Recruiter</option>
             </select>
           </div>
+
           <button type="submit" disabled={loading} className="auth-btn">
             {loading ? <span className="spinner"></span> : 'Register'}
           </button>

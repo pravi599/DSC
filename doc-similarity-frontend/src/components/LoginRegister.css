@@ -1,53 +1,95 @@
-/* --- Enterprise SaaS Login/Register Styles --- */
 .auth-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f6f7fb;
+  background: #f4f7fb;
   position: relative;
-  overflow: hidden;
-  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
+
+.auth-form select {
+  width: 100%;
+  padding: 13px 40px 13px 40px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  background: #f3f5f6 url("data:image/svg+xml;utf8,<svg fill='%233a5a97' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 14px center;
+  background-size: 16px;
+  color: #23272f;
+  font-size: 1.05rem;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-weight: 500;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 0 1px 2px rgba(60,72,88,0.03);
+  transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.auth-form select:focus {
+  border-color: #f9a8d4;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 2px #f9a8d433;
+}
+
 .auth-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   background: rgba(255, 255, 255, 0.7);
   z-index: 1;
   backdrop-filter: blur(6px) saturate(180%);
 }
+
 .auth-wrapper {
   position: relative;
   z-index: 2;
-  max-width: 1000px;
-  width: 90%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  padding: 30px;
+  gap: 50px;
+  background: #ffffffee;
+  max-width: 1100px;
+  width: 90%;
+  padding: 40px 60px;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(60, 72, 88, 0.1);
 }
+
+.auth-wrapper::before {
+  content: '';
+  position: absolute;
+  height: 80%;
+  width: 1px;
+  background: #d1d5db;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
 .auth-left {
-  flex: 1;
-  color: #23272f;
+  padding-right: 30px;
 }
+
 .auth-left h1 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
-  margin-bottom: 20px;
   color: #3a5a97;
-  letter-spacing: 1px;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
 }
+
 .auth-left p {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: #4b5563;
-  line-height: 1.7;
+  line-height: 1.75;
+  max-width: 520px;
 }
+
 .auth-form {
   background: #fff;
-  backdrop-filter: blur(8px) saturate(180%);
-  -webkit-backdrop-filter: blur(8px) saturate(180%);
-  padding: 40px 36px 32px 36px;
+  padding: 40px 36px;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(60,72,88,0.06);
   width: 100%;
@@ -56,15 +98,14 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  transition: box-shadow 0.3s;
 }
+
 .auth-form h2 {
-  text-align: center;
   color: #3a5a97;
   margin-bottom: 22px;
   font-weight: 600;
-  letter-spacing: 1px;
 }
+
 .input-group {
   width: 100%;
   position: relative;
@@ -72,6 +113,7 @@
   align-items: center;
   margin-bottom: 20px;
 }
+
 .input-icon {
   position: absolute;
   left: 14px;
@@ -80,6 +122,7 @@
   z-index: 2;
   pointer-events: none;
 }
+
 .input-eye {
   left: auto;
   right: 14px;
@@ -88,44 +131,38 @@
   pointer-events: auto;
   font-size: 1.15rem;
   z-index: 3;
-  transition: color 0.2s;
 }
-.input-eye:hover, .input-eye:focus {
+
+.input-eye:hover,
+.input-eye:focus {
   color: #f9a8d4;
   outline: 2px solid #3a5a97;
 }
-.auth-form input,
-.auth-form select {
+
+.auth-form input {
   width: 100%;
-  padding: 13px 40px 13px 40px;
+  padding: 13px 40px;
   border: 1.5px solid #e5e7eb;
   border-radius: 14px;
   background: #f3f4f6;
   color: #23272f;
   font-size: 1.05rem;
-  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   transition: border 0.2s, background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 2px rgba(60,72,88,0.03);
 }
-.auth-form input:focus,
-.auth-form select:focus {
+
+.auth-form input:focus {
   border-color: #f9a8d4;
   background: #fff;
   outline: none;
   box-shadow: 0 0 0 2px #f9a8d433;
 }
+
 .auth-form input::placeholder {
   color: #bdbdbd;
   font-weight: 400;
 }
-.auth-form select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%233a5a97' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 18px center;
-  background-size: 16px;
-}
+
 .auth-form button.auth-btn {
   width: 100%;
   padding: 14px;
@@ -135,23 +172,19 @@
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
-  cursor: pointer;
   margin-top: 10px;
-  margin-bottom: 0;
   box-shadow: 0 2px 12px rgba(60,72,88,0.06);
-  transition: background 0.3s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.5px;
-  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
 }
+
 .auth-form button.auth-btn:hover {
   background: #f9a8d4;
   color: #23272f;
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 6px 24px rgba(60,72,88,0.10);
 }
+
 .spinner {
   width: 22px;
   height: 22px;
@@ -159,12 +192,13 @@
   border-top: 3px solid #3a5a97;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  display: inline-block;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 .auth-error {
   width: 100%;
   background: #fdf2f8;
@@ -177,36 +211,51 @@
   text-align: center;
   font-weight: 500;
 }
+
 .register-prompt {
   margin-top: 18px;
   color: #4b5563;
   font-size: 1rem;
   text-align: center;
 }
+
 .register-prompt a {
   color: #3a5a97;
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s;
 }
+
 .register-prompt a:hover {
   color: #f9a8d4;
   text-decoration: underline;
 }
+
 @media (max-width: 768px) {
   .auth-wrapper {
-    flex-direction: column;
-    gap: 18px;
-    padding: 18px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px 16px;
   }
+
+  .auth-wrapper::before {
+    display: none;
+  }
+
+  .auth-left {
+    text-align: center;
+    padding-right: 0;
+  }
+
   .auth-left h1 {
     font-size: 2rem;
   }
+
   .auth-left p {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
+
   .auth-form {
-    padding: 28px 12px 22px 12px;
-    max-width: 98vw;
+    padding: 28px 20px;
+    max-width: 95vw;
   }
 }

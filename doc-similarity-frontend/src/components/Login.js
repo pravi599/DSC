@@ -62,12 +62,11 @@ function Login() {
       <div className="auth-overlay"></div>
       <div className="auth-wrapper">
         <div className="auth-left">
-          {/* <div className="auth-logo">
-            <img src="/logo192.png" alt="Logo" />
-            <span>DocSim</span>
-          </div> */}
           <h1>Welcome to Document Similarity Comparison</h1>
-          <p>Effortlessly match job descriptions with consultant profiles. Streamline your recruitment process with precision.</p>
+          <p>
+            Effortlessly match job descriptions with consultant profiles.
+            Streamline your recruitment process with precision and AI assistance.
+          </p>
         </div>
         <form className="auth-form" onSubmit={handleLogin} autoComplete="on">
           <h2>Login</h2>
@@ -93,7 +92,13 @@ function Login() {
               required
               autoComplete="current-password"
             />
-            <span className="input-icon input-eye" onClick={() => setShowPassword((v) => !v)} tabIndex={0} role="button" aria-label="Toggle password visibility">
+            <span
+              className="input-icon input-eye"
+              onClick={() => setShowPassword((v) => !v)}
+              tabIndex={0}
+              role="button"
+              aria-label="Toggle password visibility"
+            >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
