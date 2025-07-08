@@ -9,7 +9,6 @@ function ConsultantsPage() {
   const [consultants, setConsultants] = useState([]);
   const [search, setSearch] = useState('');
   const [experienceFilter, setExperienceFilter] = useState('');
-  // const [statusFilter, setStatusFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
  
@@ -20,13 +19,15 @@ function ConsultantsPage() {
         if (!response.ok) throw new Error('Failed to fetch consultant data.');
         const data = await response.json();
  
-        // Process each record
         const enrichedData = data.map((c, index) => ({
           id: c.id || index,
           name: c.name || '',
+          email: c.email || 'applicant@example.com',
+          jdId: c.jdId || null,
           skills: c.skills ? c.skills.split(',').map(skill => skill.trim()) : [],
           experience: c.experience || 0,
-          status: 'Available' // Assume available unless backend provides status
+          userCommunicationStatus: c.userCommunicationStatus || '',
+          status: 'Available',
         }));
  
         setConsultants(enrichedData);
@@ -52,10 +53,7 @@ function ConsultantsPage() {
         (experienceFilter === '3-5' && c.experience >= 3 && c.experience <= 5) ||
         (experienceFilter === '6+' && c.experience >= 6);
  
-      // const matchesStatus = statusFilter === '' || c.status === statusFilter;
- 
-      // return matchesSearch && matchesExperience && matchesStatus;
-      return matchesSearch && matchesExperience
+      return matchesSearch && matchesExperience;
     });
   };
  
@@ -77,6 +75,42 @@ function ConsultantsPage() {
     saveAs(blob, `${consultant.name}_report.xlsx`);
   };
  
+  const sendEmail = async (consultant) => {
+    if (!consultant.id) {
+      alert('❌ Consultant ID missing.');
+      return;
+    }
+ 
+    const url = `https://localhost:7117/api/ResumeDetail?id=${consultant.id}`;
+ 
+    try {
+      const response = await fetch(url, {
+        method: 'POST'
+      });
+ 
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+ 
+      const resultText = await response.text();
+ 
+      // Update the consultant's communication status based on result
+      setConsultants(prev =>
+        prev.map(c =>
+          c.id === consultant.id
+            ? { ...c, userCommunicationStatus: resultText }
+            : c
+        )
+      );
+ 
+      if (resultText === 'Sent') {
+        alert('✅ Email sent successfully');
+      } else {
+        alert('⚠️ Email send failed.');
+      }
+    } catch (err) {
+      alert(`❌ Failed to send email: ${err.message}`);
+    }
+  };
+ 
   if (loading) return <div className="consultants-container">Loading consultants...</div>;
   if (error) return <div className="consultants-container error">Error: {error}</div>;
  
@@ -96,41 +130,17 @@ function ConsultantsPage() {
           <option value="3-5">3-5 yrs</option>
           <option value="6+">6+ yrs</option>
         </select>
-        {/* <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">All Status</option>
-          <option value="Available">Available</option>
-          <option value="Busy">Busy</option>
-        </select> */}
       </div>
  
       {/* Table */}
       <table className="consultant-table">
         <thead>
           <tr>
-            <th>
-              <div className="header-icon-label">
-                <span role="img" aria-label="Name">👤</span>
-                <span>Name</span>
-              </div>
-            </th>
-            <th>
-              <div className="header-icon-label">
-                <span role="img" aria-label="Skills">🛠️</span>
-                <span>Skills</span>
-              </div>
-            </th>
-            <th>
-              <div className="header-icon-label">
-                <span role="img" aria-label="Experience">📈</span>
-                <span>Experience</span>
-              </div>
-            </th>
-            <th>
-              <div className="header-icon-label">
-                <span role="img" aria-label="Report">📊</span>
-                <span>Report</span>
-              </div>
-            </th>
+            <th>Name</th>
+            <th>Skills</th>
+            <th>Experience</th>
+            <th>Report</th>
+            <th>Email</th>
           </tr>
         </thead>
         <tbody>
@@ -143,6 +153,15 @@ function ConsultantsPage() {
                 <button className="btn-consultant" onClick={() => generateExcelReport(c)}>
                   <FileText size={16} style={{ marginRight: '6px' }} />
                   Generate Report
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn-consultant"
+                  onClick={() => sendEmail(c)}
+                  disabled={c.userCommunicationStatus === 'Sent'}
+                >
+                  {c.userCommunicationStatus === 'Sent' ? '✅ Sent' : '✉️ Send Email'}
                 </button>
               </td>
             </tr>
