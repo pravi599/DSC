@@ -112,7 +112,7 @@ function ARDashboard() {
     });
 
     connection.on('ResumeUpdated', () => {
-      toast.info('🔁 Resume compared. Refreshing JD status...');
+      toast.info(`🔁 New resume processed for ${selectedJD.id} Refreshing JD status...`, );
       if (selectedJD?.id) fetchJDById(selectedJD.id);
     });
 

@@ -96,7 +96,6 @@ function JDCompared() {
                       style={{ width: `${profile.score}%` }}
                       data-label={`${profile.score.toFixed(2)}%`}
                     >
-                      Score
                     </div>
                   </div>
                 </div>
