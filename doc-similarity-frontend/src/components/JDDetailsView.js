@@ -72,7 +72,7 @@ function JDDetailsView({ selectedJD, setSelectedJD }) {
           <div className="profiles-grid">
             {sortedTop3.map((match, index) => (
               <div className="profile-card enhanced uniform" key={match.id}>
-                <div className="profile-rank">🏅 Rank #{index + 1}</div>
+                <div className="profile-rank">🏅 #{index + 1}</div>
                 <h4>{match.name}</h4>
                 <p><strong>Email:</strong> {match.email}</p>
                 <p><strong>Experience:</strong> {match.experience} years</p>

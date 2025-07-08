@@ -37,11 +37,10 @@ function Layout({ active, children }) {
         .layout-container {
           display: flex;
         }
-
         .sidebar {
           width: 180px;
           background: #fff;
-          box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+          box-shadow: 2px 0 8px rgba(60,72,88,0.06);
           padding: 20px 10px;
           transition: width 0.3s;
           position: fixed;
@@ -49,12 +48,11 @@ function Layout({ active, children }) {
           bottom: 0;
           z-index: 10;
           height: 100vh;
+          font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         .sidebar.collapsed {
           width: 60px;
         }
-
         .toggle-btn {
           position: absolute;
           top: 10px;
@@ -63,55 +61,52 @@ function Layout({ active, children }) {
           border: none;
           font-size: 18px;
           cursor: pointer;
+          color: #3a5a97;
         }
-
         nav a {
           display: flex;
           align-items: center;
           margin: 16px 0;
           text-decoration: none;
-          color: #333;
+          color: #3a5a97;
           font-weight: 500;
           transition: 0.2s ease;
           padding: 8px;
           border-radius: 6px;
+          font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          border-bottom: 3px solid transparent;
         }
-
         nav a:hover {
-          background: #f0f4ff;
+          background: #f6f7fb;
+          color: #23272f;
         }
-
         nav a.active {
-          color: #1976d2;
-          background: #e3f2fd;
+          color: #3a5a97;
+          background: #fdf2f8;
+          border-bottom: 3px solid #f9a8d4;
         }
-
         .link-text {
           margin-left: 10px;
           white-space: nowrap;
         }
-
         .sidebar.collapsed .link-text {
           display: none;
         }
-
         .main-content {
           flex-grow: 1;
           padding: 20px;
           margin-left: 200px;
           transition: margin-left 0.3s;
+          font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         .main-content.collapsed {
           margin-left: 60px;
         }
-
         @media (max-width: 768px) {
           .sidebar {
             position: absolute;
             z-index: 10;
           }
-
           .main-content {
             margin-left: 60px;
           }

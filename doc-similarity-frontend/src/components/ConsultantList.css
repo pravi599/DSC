@@ -1,19 +1,22 @@
-consultants-container {
-  padding: 20px;
+.consultants-container {
+  background: #f6f7fb;
+  padding: 32px;
+  border-radius: 18px;
 }
- 
 .consultant-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(60,72,88,0.06);
   border-radius: 10px;
   overflow: hidden;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 4px solid #3a5a97;
 }
 .consultant-table thead {
-  background: linear-gradient(to right, #4f46e5, #6366f1);
-  color: white;
+  background: #2ec4b6;
+  color: #23272f;
   text-transform: uppercase;
   font-size: 13px;
   letter-spacing: 0.5px;
@@ -21,46 +24,42 @@ consultants-container {
   top: 0;
   z-index: 2;
 }
- 
 .consultant-table th,
 .consultant-table td {
   padding: 16px 14px;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e5e7eb;
 }
- 
- 
 .consultant-table th {
-  background: linear-gradient(to right, #4f46e5, #6366f1);
-  color: white;
+  /* background: #f6f7fb; */
+  color: #fff;
   font-weight: 600;
   font-size: 13px;
 }
- 
 .consultant-table tbody tr:hover {
-  background-color: #f9f9ff;
+  background-color: #e5e7eb;
+  color: #23272f;
   transition: background-color 0.2s ease-in-out;
 }
- 
- 
 .consultant-table button {
-  background-color: #4f46e5;
+  background-color: #3a5a97;
   color: white;
   border: none;
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
- 
 .consultant-table button:hover {
-  background-color: #4338ca;
+  background-color: #e5e7eb;
+  color: #3a5a97;
   transform: translateY(-1px);
 }
- 
 .consultant-table button:active {
-  background-color: #3730a3;
+  background-color: #3a5a97;
+  color: #fff;
   transform: translateY(0);
 }
 .header-icon-label {
@@ -70,7 +69,6 @@ consultants-container {
   gap: 4px;
   line-height: 1.3;
 }
- 
 .header-icon-label span:first-child {
   font-size: 18px;
 }
