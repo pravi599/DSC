@@ -1,8 +1,9 @@
+// src/pages/JDDetailsView.js
 import React from 'react';
 import './ARDashboard.css';
 
-function getStepClass(status, step) {
-  if (step === 'profiles') return status.length ? 'done' : 'notfound';
+function getStepClass(status, isProfilesStep = false) {
+  if (isProfilesStep) return status.length ? 'done' : 'notfound';
   if (status === 'Comparison Completed' || status === 'Communication Sent') return 'done';
   if (status === 'In Progress' || status === 'Communication Failed') return 'pending';
   return 'notstarted';
@@ -37,23 +38,24 @@ function JDDetailsView({ selectedJD, setSelectedJD }) {
       </button>
 
       <div className="workflow-container with-arrows">
-        {["comparisonStatus", "topMatches", "emailStatus"].map((step, idx) => {
-          const label =
-            step === "comparisonStatus"
-              ? "JD Compared"
-              : step === "topMatches"
-              ? "Top 3 Matches"
-              : "Email Sent";
+        {['comparisonStatus', 'topMatches', 'emailStatus'].map((step, idx) => {
+          const label = step === 'comparisonStatus'
+            ? 'JD Compared'
+            : step === 'topMatches'
+              ? 'Top 3 Matches'
+              : 'Email Sent';
 
-          const className = getStepClass(selectedJD[step], step === "topMatches" ? "profiles" : "");
-          const icon = getStepIcon(step, selectedJD[step]);
+          const status = selectedJD[step];
+          const isProfilesStep = step === 'topMatches';
+          const className = getStepClass(status, isProfilesStep);
+          const icon = getStepIcon(step, status);
 
           return (
             <div key={idx} className={`workflow-step ${className}`} title={label}>
               <h4>{label}</h4>
               <p>{icon}</p>
               <span className="tooltip">
-                {typeof selectedJD[step] === 'object' ? '' : selectedJD[step]}
+                {typeof status === 'object' ? '' : status}
               </span>
             </div>
           );

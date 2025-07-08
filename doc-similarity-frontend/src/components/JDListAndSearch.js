@@ -1,3 +1,4 @@
+// ✅ JDListAndSearch.js (Updated to support fetch by id)
 import React from 'react';
 import Modal from '../components/Modal';
 import FileUpload from '../components/FileUpload';
@@ -15,11 +16,11 @@ function JDListAndSearch({
   handleCompare,
   filteredJDs,
   setSelectedJD,
+  refreshJDList,
 }) {
   return (
     <>
       <div className="dashboard-header">
-        {/* <h2 className="dashboard-title">AR Requestor Dashboard</h2> */}
         <button onClick={() => setIsModalOpen(true)} className="add-jd-btn">
           <Plus className="w-5 h-5 mr-2" /> Add JD
         </button>
@@ -42,6 +43,7 @@ function JDListAndSearch({
           onCancel={handleCancel}
           onCompare={handleCompare}
           selectedFile={selectedFile}
+          refreshJDList={refreshJDList} // ✅ Pass to trigger list update on SignalR
         />
       </Modal>
 
@@ -52,7 +54,7 @@ function JDListAndSearch({
               <div className="jd-file-info">
                 <span className="jd-title-link">{jd.title}</span>
               </div>
-              <button className="view-status-btn" onClick={() => setSelectedJD(jd)}>
+              <button className="view-status-btn" onClick={() => setSelectedJD(jd.id)}>
                 View Status
               </button>
             </div>
